@@ -1,8 +1,10 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
+import { getUserInfo } from "../../utils/userSession"
 import "./Navbar.css";
 
 const Navbar = ({ logout }) => {
+  const user = getUserInfo();
   const [menuOpen, setMenuOpen] = useState(false);
 
   const handleLinkClick = () => {
@@ -10,8 +12,9 @@ const Navbar = ({ logout }) => {
   };
 
   return (
+    
     <nav className="navbar">
-      <h1 className="logo">Rice Mill</h1>
+      <h1 className="logo">{user.company}</h1>
       <div className="menu-icon" onClick={() => setMenuOpen(!menuOpen)}>
         ☰
       </div>

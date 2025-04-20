@@ -10,9 +10,7 @@ const LoginPage = ({ setUserLoggedIn }) => {
 
   const handleLogin = async (e) => {
     e.preventDefault();
-    setIsLoading(true);
-    setErrorMessage("");
-
+  
     try {
       const response = await axios.post(
         "https://script.google.com/macros/s/AKfycbxPTBzOQdfrmLQf9FnXT1jyCr3U_WGaNdMCuXau_PSN5etcVgtG1JhIQCuXrZ6mNOeHUA/exec",
@@ -25,20 +23,20 @@ const LoginPage = ({ setUserLoggedIn }) => {
           },
         }
       );
-
-      if (response.data.status === "Success") {
-        // ✅ Save login state in localStorage
+  
+      if (response.data.status == "Success" && response.data.message !== "Invalid Username and Password" ) {
+        const userInfo = response.data.message;
+        // Save user data in sessionStorage
+        sessionStorage.setItem("userData", JSON.stringify(userInfo));
         localStorage.setItem("isLoggedIn", "true");
-
         setUserLoggedIn(true);
         setErrorMessage("");
       } else {
-        setErrorMessage(response.data.message || "Invalid credentials.");
+        setErrorMessage(response.data.message || "Invalid credentials");
       }
     } catch (error) {
+      console.error("Login Error", error);
       setErrorMessage("Login failed. Please try again.");
-    } finally {
-      setIsLoading(false);
     }
   };
 
