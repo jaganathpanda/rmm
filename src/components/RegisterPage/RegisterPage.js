@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Link } from "react-router-dom";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import "./RegisterPage.css";
@@ -136,7 +137,7 @@ const RegistrationPage = () => {
       </form>
       {errorMessage && <p className="error">{errorMessage}</p>}
       <div className="login-link">
-        <p>Already have an account? <a href="/login">Login here</a></p>
+        <p>Already have an account? <Link to="/login">Login Here</Link></p>
       </div>
     </div>
   );
