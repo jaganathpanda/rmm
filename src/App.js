@@ -1,12 +1,18 @@
 import React, { useState, useEffect } from "react";
+import { HashRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 import LoginPage from "./components/LoginPage/LoginPage";
 import Navbar from "./components/Navbar/Navbar";
 import Home from "./components/Home/Home";
+import Inventory from "./components/Inventory/Inventory";
+import Purchases from "./components/Purchases/Purchases";
+import Sales from "./components/Sales/Sales";
+import Customers from "./components/Customers/Customers";
+import Reports from "./components/Reports/Reports";
+import Settings from "./components/Settings/Settings";
 
 const App = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
-  // Check localStorage for login status on app load
   useEffect(() => {
     const storedLogin = localStorage.getItem("isLoggedIn");
     if (storedLogin === "true") {
@@ -14,23 +20,38 @@ const App = () => {
     }
   }, []);
 
-  // Logout function to reset login state
   const handleLogout = () => {
     localStorage.removeItem("isLoggedIn");
     setIsLoggedIn(false);
   };
 
   return (
-    <div>
+    <Router>
       {isLoggedIn ? (
         <>
           <Navbar logout={handleLogout} />
-          <Home />
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/inventory" element={<Inventory />} />
+            <Route path="/purchases" element={<Purchases />} />
+            <Route path="/sales" element={<Sales />} />
+            <Route path="/customers" element={<Customers />} />
+            <Route path="/reports" element={<Reports />} />
+            <Route path="/settings" element={<Settings />} />
+            <Route path="*" element={<Navigate to="/" />} />
+          </Routes>
         </>
       ) : (
-        <LoginPage setUserLoggedIn={setIsLoggedIn} />
+        <Routes>
+          <Route path="*" element={<LoginPage setUserLoggedIn={(val) => {
+            if (val) {
+              localStorage.setItem("isLoggedIn", "true");
+              setIsLoggedIn(true);
+            }
+          }} />} />
+        </Routes>
       )}
-    </div>
+    </Router>
   );
 };
 
