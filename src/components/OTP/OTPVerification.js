@@ -10,12 +10,12 @@ const OTPVerification = () => {
 
   const registrationData = JSON.parse(sessionStorage.getItem("registrationData"));
 
-  useEffect(() => {
+  /*useEffect(() => {
     if (!registrationData) {
       // If user refreshes or opens directly without registration
       navigate("/login");
     }
-  }, [registrationData, navigate]);
+  }, [registrationData, navigate]);*/
 
   const handleChange = (value, index) => {
     if (/^[0-9]?$/.test(value)) {
@@ -40,13 +40,12 @@ const OTPVerification = () => {
 
     try {
       const response = await axios.post(
-        registrationData.scriptUrl,
+        "https://script.google.com/macros/s/AKfycbxPTBzOQdfrmLQf9FnXT1jyCr3U_WGaNdMCuXau_PSN5etcVgtG1JhIQCuXrZ6mNOeHUA/exec",
         null,
         {
           params: {
-            action: "verifyOTP",
-            username: registrationData.username,
-            otp: fullOtp,
+            action: "otpVerification",
+            rmmOtp: fullOtp
           },
         }
       );

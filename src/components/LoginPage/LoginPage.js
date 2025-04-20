@@ -72,6 +72,9 @@ const LoginPage = ({ setUserLoggedIn }) => {
           Don't have an account?{" "}
           <Link to="/register">Register your Rice Mill</Link>
         </p>
+        <p className="forgot-link">
+          <Link to="/forgot-password">Forgot Password?</Link>
+        </p>
       </div>
     </div>
   );
