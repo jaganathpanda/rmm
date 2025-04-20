@@ -1,35 +1,37 @@
-import React from "react";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import Navbar from "./components/Navbar/Navbar"
+import React, { useState, useEffect } from "react";
+import LoginPage from "./components/LoginPage/LoginPage";
+import Navbar from "./components/Navbar/Navbar";
+import Home from "./components/Home/Home";
 
-// Placeholder pages
-const Home = () => <h2>Welcome to Rice Mill Management System</h2>;
-const Inventory = () => <h2>Inventory Page</h2>;
-const Purchases = () => <h2>Purchases Page</h2>;
-const Sales = () => <h2>Sales Page</h2>;
-const Customers = () => <h2>Customers Page</h2>;
-const Reports = () => <h2>Reports Page</h2>;
-const Settings = () => <h2>Settings Page</h2>;
-const Logout = () => <h2>You have been logged out.</h2>;
+const App = () => {
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
-function App() {
+  // Check localStorage for login status on app load
+  useEffect(() => {
+    const storedLogin = localStorage.getItem("isLoggedIn");
+    if (storedLogin === "true") {
+      setIsLoggedIn(true);
+    }
+  }, []);
+
+  // Logout function to reset login state
+  const handleLogout = () => {
+    localStorage.removeItem("isLoggedIn");
+    setIsLoggedIn(false);
+  };
+
   return (
-    <Router>
-      <Navbar />
-      <div style={{ padding: "2rem" }}>
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/inventory" element={<Inventory />} />
-          <Route path="/purchases" element={<Purchases />} />
-          <Route path="/sales" element={<Sales />} />
-          <Route path="/customers" element={<Customers />} />
-          <Route path="/reports" element={<Reports />} />
-          <Route path="/settings" element={<Settings />} />
-          <Route path="/logout" element={<Logout />} />
-        </Routes>
-      </div>
-    </Router>
+    <div>
+      {isLoggedIn ? (
+        <>
+          <Navbar logout={handleLogout} />
+          <Home />
+        </>
+      ) : (
+        <LoginPage setUserLoggedIn={setIsLoggedIn} />
+      )}
+    </div>
   );
-}
+};
 
 export default App;
