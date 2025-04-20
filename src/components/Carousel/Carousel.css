@@ -1,0 +1,45 @@
+/* components/Carousel/Carousel.css */
+.carousel {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    margin: 0 auto;
+    border-radius: 10px;
+    background-color: #f4f4f4;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+    height: 300px;
+  }
+  
+  .slide {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .slide img{
+    width: 100%;
+  }
+  
+  .arrow {
+    position: absolute;
+    top: 50%;
+    font-size: 2rem;
+    background: none;
+    border: none;
+    cursor: pointer;
+    z-index: 1;
+    transform: translateY(-50%);
+    color: #333;
+  }
+  
+  .arrow.left {
+    left: 10px;
+  }
+  
+  .arrow.right {
+    right: 10px;
+  }
+  
