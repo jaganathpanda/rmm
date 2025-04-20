@@ -1,6 +1,7 @@
 import React, { useState } from "react";
+import { Link } from "react-router-dom"; // Add this
 import axios from "axios";
-import "./LoginPage.css"; // Make sure this CSS file exists
+import "./LoginPage.css";
 
 const LoginPage = ({ setUserLoggedIn }) => {
   const [username, setUsername] = useState("");
@@ -10,7 +11,7 @@ const LoginPage = ({ setUserLoggedIn }) => {
 
   const handleLogin = async (e) => {
     e.preventDefault();
-  
+
     try {
       const response = await axios.post(
         "https://script.google.com/macros/s/AKfycbxPTBzOQdfrmLQf9FnXT1jyCr3U_WGaNdMCuXau_PSN5etcVgtG1JhIQCuXrZ6mNOeHUA/exec",
@@ -23,10 +24,9 @@ const LoginPage = ({ setUserLoggedIn }) => {
           },
         }
       );
-  
-      if (response.data.status == "Success" && response.data.message !== "Invalid Username and Password" ) {
+
+      if (response.data.status === "Success" && response.data.message !== "Invalid Username and Password") {
         const userInfo = response.data.message;
-        // Save user data in sessionStorage
         sessionStorage.setItem("userData", JSON.stringify(userInfo));
         localStorage.setItem("isLoggedIn", "true");
         setUserLoggedIn(true);
@@ -68,6 +68,10 @@ const LoginPage = ({ setUserLoggedIn }) => {
           </button>
         </form>
         {errorMessage && <p className="error">{errorMessage}</p>}
+        <p className="register-link">
+          Don't have an account?{" "}
+          <Link to="/register">Register your Rice Mill</Link>
+        </p>
       </div>
     </div>
   );

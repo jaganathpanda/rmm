@@ -10,6 +10,8 @@ import Customers from "./components/Customers/Customers";
 import Reports from "./components/Reports/Reports";
 import Settings from "./components/Settings/Settings";
 import Profile from "./components/Profile/Profile"; 
+import RegisterPage from "./components/RegisterPage/RegisterPage";
+import OTPVerification from "./components/OTP/OTPVerification";
 
 const App = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -42,16 +44,26 @@ const App = () => {
             <Route path="/reports" element={<Reports />} />
             <Route path="/settings" element={<Settings />} />
             <Route path="*" element={<Navigate to="/" />} />
+            <Route path="/otp-verification" element={<OTPVerification />} />
           </Routes>
         </>
       ) : (
         <Routes>
-          <Route path="*" element={<LoginPage setUserLoggedIn={(val) => {
-            if (val) {
-              localStorage.setItem("isLoggedIn", "true");
-              setIsLoggedIn(true);
+          <Route
+            path="/"
+            element={
+              <LoginPage
+                setUserLoggedIn={(val) => {
+                  if (val) {
+                    localStorage.setItem("isLoggedIn", "true");
+                    setIsLoggedIn(true);
+                  }
+                }}
+              />
             }
-          }} />} />
+          />
+          <Route path="/register" element={<RegisterPage />} />
+          <Route path="*" element={<Navigate to="/" />} />
         </Routes>
       )}
     </Router>
