@@ -14,7 +14,7 @@ const Navbar = ({ logout }) => {
   return (
     
     <nav className="navbar">
-      <h1 className="logo">{user.company}</h1>
+      <h1 className="logo">{user[4]}</h1>
       <div className="menu-icon" onClick={() => setMenuOpen(!menuOpen)}>
         ☰
       </div>
@@ -26,6 +26,7 @@ const Navbar = ({ logout }) => {
         <li><Link to="/customers" onClick={handleLinkClick}>Customers</Link></li>
         <li><Link to="/reports" onClick={handleLinkClick}>Reports</Link></li>
         <li><Link to="/settings" onClick={handleLinkClick}>Settings</Link></li>
+        <li><Link to="/profile" onClick={handleLinkClick}>Profile</Link></li>
         <li>
           <button onClick={() => { logout(); handleLinkClick(); }} className="logout-btn">
             Logout

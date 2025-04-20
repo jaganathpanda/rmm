@@ -9,6 +9,7 @@ import Sales from "./components/Sales/Sales";
 import Customers from "./components/Customers/Customers";
 import Reports from "./components/Reports/Reports";
 import Settings from "./components/Settings/Settings";
+import Profile from "./components/Profile/Profile"; 
 
 const App = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -22,6 +23,7 @@ const App = () => {
 
   const handleLogout = () => {
     localStorage.removeItem("isLoggedIn");
+    sessionStorage.clear(); 
     setIsLoggedIn(false);
   };
 
@@ -32,6 +34,7 @@ const App = () => {
           <Navbar logout={handleLogout} />
           <Routes>
             <Route path="/" element={<Home />} />
+            <Route path="/profile" element={<Profile />} />
             <Route path="/inventory" element={<Inventory />} />
             <Route path="/purchases" element={<Purchases />} />
             <Route path="/sales" element={<Sales />} />
