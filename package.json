@@ -2,7 +2,7 @@
   "name": "rice-mill-managment-system",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://github.com/jaganathpanda/rmm",
+  "homepage": "https://jaganathpanda.github.io/rmm",
   "dependencies": {
     "@testing-library/dom": "^10.4.0",
     "@testing-library/jest-dom": "^6.6.3",
