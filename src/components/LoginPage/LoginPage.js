@@ -28,7 +28,7 @@ const LoginPage = ({ setUserLoggedIn }) => {
       if (response.data.status === "Success" && response.data.message !== "Invalid Username and Password") {
         const userInfo = response.data.message;
         sessionStorage.setItem("userData", JSON.stringify(userInfo));
-        localStorage.setItem("isLoggedIn", "true");
+        sessionStorage.setItem("isLoggedIn", "true");
         setUserLoggedIn(true);
         setErrorMessage("");
       } else {

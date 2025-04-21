@@ -4,8 +4,8 @@ import LoginPage from "./components/LoginPage/LoginPage";
 import Navbar from "./components/Navbar/Navbar";
 import Home from "./components/Home/Home";
 import Inventory from "./components/Inventory/Inventory";
-import Purchases from "./components/Purchases/Purchases";
-import Sales from "./components/Sales/Sales";
+import PaddyPurchaseForm from "./components/PaddyPurchaseForm/PaddyPurchaseForm";
+import GoodsSalesVoucherForm from "./components/GoodsSalesVoucherForm/GoodsSalesVoucherForm";
 import Customers from "./components/Customers/Customers";
 import Reports from "./components/Reports/Reports";
 import Settings from "./components/Settings/Settings";
@@ -19,7 +19,7 @@ const App = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   useEffect(() => {
-    const storedLogin = localStorage.getItem("isLoggedIn");
+    const storedLogin = sessionStorage.getItem("isLoggedIn");
     if (storedLogin === "true") {
       setIsLoggedIn(true);
     }
@@ -41,8 +41,8 @@ const App = () => {
             <Route path="/login" element={<LoginPage />} />
             <Route path="/profile" element={<Profile />} />
             <Route path="/inventory" element={<Inventory />} />
-            <Route path="/purchases" element={<Purchases />} />
-            <Route path="/sales" element={<Sales />} />
+            <Route path="/paddyPurchaseForm" element={<PaddyPurchaseForm />} />
+            <Route path="/goodsSalesVoucherForm" element={<GoodsSalesVoucherForm />} />
             <Route path="/customers" element={<Customers />} />
             <Route path="/reports" element={<Reports />} />
             <Route path="/settings" element={<Settings />} />
@@ -57,7 +57,7 @@ const App = () => {
               <LoginPage
                 setUserLoggedIn={(val) => {
                   if (val) {
-                    localStorage.setItem("isLoggedIn", "true");
+                    sessionStorage.setItem("isLoggedIn", "true");
                     setIsLoggedIn(true);
                   }
                 }}

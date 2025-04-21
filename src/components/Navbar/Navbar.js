@@ -21,8 +21,8 @@ const Navbar = ({ logout }) => {
       <ul className={`nav-links ${menuOpen ? "active" : ""}`}>
         <li><Link to="/" onClick={handleLinkClick}>Home</Link></li>
         <li><Link to="/inventory" onClick={handleLinkClick}>Inventory</Link></li>
-        <li><Link to="/purchases" onClick={handleLinkClick}>Purchases</Link></li>
-        <li><Link to="/sales" onClick={handleLinkClick}>Sales</Link></li>
+        <li><Link to="/paddyPurchaseForm" onClick={handleLinkClick}>Paddy Purchase Form</Link></li>
+        <li><Link to="/goodsSalesVoucherForm" onClick={handleLinkClick}>Sales Voucher</Link></li>
         <li><Link to="/customers" onClick={handleLinkClick}>Customers</Link></li>
         <li><Link to="/reports" onClick={handleLinkClick}>Reports</Link></li>
         <li><Link to="/settings" onClick={handleLinkClick}>Settings</Link></li>
