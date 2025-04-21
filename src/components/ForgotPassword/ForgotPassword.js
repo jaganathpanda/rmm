@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import { Link } from "react-router-dom"; 
 import "./ForgotPassword.css"; // Optional for styling
 
 const ForgotPassword = () => {
@@ -65,7 +66,7 @@ const ForgotPassword = () => {
                 {error && <p className="error">{error}</p>}
                 <div className="login-link">
                     <p>Already have an account? <Link to="/login">Login Here</Link></p>
-                </div>ß
+                </div>
             </div>
         </div>
     );
