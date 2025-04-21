@@ -13,6 +13,7 @@ import Profile from "./components/Profile/Profile";
 import RegisterPage from "./components/RegisterPage/RegisterPage";
 import OTPVerification from "./components/OTP/OTPVerification";
 import ForgotPassword from "./components/ForgotPassword/ForgotPassword";
+import UpdatePassword from "./components/UpdatePassword/UpdatePassword";
 
 const App = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -67,6 +68,7 @@ const App = () => {
           <Route path="*" element={<Navigate to="/" />} />
           <Route path="/otp-verification" element={<OTPVerification />} />
           <Route path="/forgot-password" element={<ForgotPassword />} />  
+          <Route path="/update-password" element={<UpdatePassword />} />  
         </Routes>
       )}
     </Router>

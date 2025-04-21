@@ -53,18 +53,13 @@ const RegistrationPage = () => {
       );
 
       if (response.data.status === "Success") {
-        sessionStorage.setItem("pendingUserEmail", rmmEmail);
+        const pendingRegistartion = {
+          rmmEmail: rmmEmail,
+          status: "pendingRegistartion",
+      };
+        sessionStorage.setItem("pendingOtp", JSON.stringify(pendingRegistartion));
         navigate("/otp-verification");
-      } else if (response.data.status === "Fail" && response.data.statusCode === 409) {
-        // Email already exists, check OTP verification status
-        const pendingEmail = sessionStorage.getItem("pendingUserEmail");
-        if (pendingEmail === rmmEmail) {
-          navigate("/otp-verification"); // Redirect to OTP verification
-        } else {
-          navigate("/forgot-password"); // Redirect to forgot password if OTP is already verified
-        }
-        setErrorMessage("Email already exists. Please verify your OTP or reset your password.");
-      } else {
+      }else {
         setErrorMessage(response.data.message || "Registration failed.");
       }
     } catch (error) {

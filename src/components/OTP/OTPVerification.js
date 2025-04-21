@@ -1,28 +1,26 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import "./OTPVerification.css"; // Optional: create styles
+import "./OTPVerification.css";
 
 const OTPVerification = () => {
   const [otp, setOtp] = useState(["", "", "", ""]);
   const [errorMessage, setErrorMessage] = useState("");
   const navigate = useNavigate();
 
-  const registrationData = JSON.parse(sessionStorage.getItem("registrationData"));
+  const pendingOtp = JSON.parse(sessionStorage.getItem("pendingOtp"));
 
-  /*useEffect(() => {
-    if (!registrationData) {
-      // If user refreshes or opens directly without registration
+  useEffect(() => {
+    if (!pendingOtp || !pendingOtp.rmmEmail) {
       navigate("/login");
     }
-  }, [registrationData, navigate]);*/
+  }, [navigate, pendingOtp]);
 
   const handleChange = (value, index) => {
     if (/^[0-9]?$/.test(value)) {
       const newOtp = [...otp];
       newOtp[index] = value;
       setOtp(newOtp);
-      // Focus next input
       if (value && index < 3) {
         document.getElementById(`otp-${index + 1}`).focus();
       }
@@ -45,14 +43,26 @@ const OTPVerification = () => {
         {
           params: {
             action: "otpVerification",
-            rmmOtp: fullOtp
+            rmmOtp: fullOtp,
+            rmmEmailId: pendingOtp.rmmEmail,
           },
         }
       );
 
       if (response.data.status === "Success") {
-        sessionStorage.removeItem("registrationData");
-        navigate("/login");
+        sessionStorage.removeItem("pendingOtp");
+        if (pendingOtp.status === "forgotPasswordPending") {
+          const pendingPassowrdUpdate = {
+            rmmEmail: pendingOtp.rmmEmail,
+            status: "pendingPassowrdUpdate",
+        };
+        sessionStorage.setItem("pendingPassowrdUpdate", JSON.stringify(pendingPassowrdUpdate));
+          navigate("/update-password");
+        } else if (pendingOtp.status === "pendingRegistration") {
+          navigate("/login");
+        } else {
+          navigate("/login"); // fallback if status is unknown
+        }
       } else {
         setErrorMessage(response.data.message || "OTP verification failed.");
       }
