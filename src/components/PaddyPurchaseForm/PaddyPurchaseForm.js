@@ -1,7 +1,10 @@
 import React, { useState } from "react";
 import "../../utils/Form.css";
+import { getUserInfo } from "../../utils/userSession"
+
 
 const PaddyPurchaseForm = () => {
+  const user = getUserInfo();
   const [formData, setFormData] = useState({
     serialNo: "",
     farmerName: "",
@@ -31,36 +34,65 @@ const PaddyPurchaseForm = () => {
     });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Simple validation
+    // Basic validation
     if (!formData.paddyType || !formData.collectionCenter) {
       alert("Please select all required dropdowns.");
       return;
     }
 
-    console.log("Form Submitted:", formData);
+    const formPayload = new FormData();
+
+    formPayload.append("action", "paddyPurchaseAction");
+    formPayload.append("rmmUserId", user[0]); // Replace with actual user ID logic
+    formPayload.append("serialNo", formData.serialNo);
+    formPayload.append("farmerName", formData.farmerName);
+    formPayload.append("rememberFarmerName", formData.rememberFarmer ? "TRUE" : "FALSE");
+    formPayload.append("farmerAddress", formData.address);
+    formPayload.append("purchaseDate", formData.purchaseDate);
+    formPayload.append("totalPaddyInKg", formData.totalPaddy);
+    formPayload.append("perBagPrice", formData.perBagPrice);
+    formPayload.append("farmerEmail", formData.email);
+    formPayload.append("farmerMobile", formData.mobile);
+    formPayload.append("typeOfPaddy", formData.paddyType);
+    formPayload.append("paddyCollectFrom", formData.collectionCenter);
+    formPayload.append("anyRemarks", ""); // Optional remarks if needed
+
     if (paddyReceipt) {
-      console.log("Attached Receipt File:", paddyReceipt.name);
+      formPayload.append("receiptImage", paddyReceipt);
     }
 
-    // Reset the form
-    setFormData({
-      serialNo: "",
-      farmerName: "",
-      rememberFarmer: false,
-      address: "",
-      email: "",
-      mobile: "",
-      purchaseDate: "",
-      totalPaddy: "",
-      perBagPrice: "",
-      paddyType: "",
-      collectionCenter: "",
-    });
-    setPaddyReceipt(null);
-    alert("Form submitted successfully!");
+    try {
+      const response = await fetch(user[10], {
+        method: "POST",
+        body: formPayload,
+      });
+
+      const result = await response.json();
+      console.log("Server Response:", result);
+      alert(result.message || "Paddy entry submitted!");
+
+      // Reset form
+      setFormData({
+        serialNo: "",
+        farmerName: "",
+        rememberFarmer: false,
+        address: "",
+        email: "",
+        mobile: "",
+        purchaseDate: "",
+        totalPaddy: "",
+        perBagPrice: "",
+        paddyType: "",
+        collectionCenter: "",
+      });
+      setPaddyReceipt(null);
+    } catch (error) {
+      console.error("Error submitting form:", error);
+      alert("Failed to submit paddy entry.");
+    }
   };
 
   return (
@@ -179,9 +211,7 @@ const PaddyPurchaseForm = () => {
           onChange={handleFileChange}
         />
         {paddyReceipt && (
-          <p className="file-info">
-            Selected: {paddyReceipt.name}
-          </p>
+          <p className="file-info">Selected: {paddyReceipt.name}</p>
         )}
 
         <button type="submit">SAVE</button>
