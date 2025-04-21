@@ -43,7 +43,7 @@ const LoginPage = ({ setUserLoggedIn }) => {
   return (
     <div className="login-container">
       <nav className="navbar">
-        <div className="navbar-logo">Rice Mill Management</div>
+        <div className="navbar-logo">Rice Mill Management System</div>
       </nav>
 
       <div className="login-box">
