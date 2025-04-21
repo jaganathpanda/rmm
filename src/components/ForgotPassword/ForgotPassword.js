@@ -63,6 +63,9 @@ const ForgotPassword = () => {
                 </form>
                 {message && <p className="success">{message}</p>}
                 {error && <p className="error">{error}</p>}
+                <div className="login-link">
+                    <p>Already have an account? <Link to="/login">Login Here</Link></p>
+                </div>ß
             </div>
         </div>
     );
