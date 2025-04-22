@@ -1,45 +1,83 @@
-/* components/Carousel/Carousel.css */
 .carousel {
-    position: relative;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    overflow: hidden;
-    margin: 0 auto;
-    border-radius: 10px;
-    background-color: #f4f4f4;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.2);
-    height: 300px;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  margin: 0 auto;
+  border-radius: 10px;
+  background-color: #f4f4f4;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  height: 300px;
+  width: 100%;
+  max-width: 1000px;
+  z-index: 0;
+}
+
+/* Adjust slide container */
+.slide {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.slide img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 10px;
+}
+
+/* Navigation Arrows */
+.arrow {
+  position: absolute;
+  top: 50%;
+  font-size: 2rem;
+  background: rgba(255, 255, 255, 0.6);
+  border: none;
+  cursor: pointer;
+  z-index: 2;
+  transform: translateY(-50%);
+  color: #333;
+  padding: 8px;
+  border-radius: 50%;
+  transition: background-color 0.2s ease;
+}
+
+.arrow:hover {
+  background-color: rgba(255, 255, 255, 0.9);
+}
+
+.arrow.left {
+  left: 10px;
+}
+
+.arrow.right {
+  right: 10px;
+}
+
+/* Responsive Tweaks */
+@media (max-width: 768px) {
+  .carousel {
+    height: 200px;
+    margin-top: 70px; /* Push carousel below nav bar if fixed */
   }
-  
-  .slide {
-    width: 100%;
-    height: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-  .slide img{
-    width: 100%;
-  }
-  
+
   .arrow {
-    position: absolute;
-    top: 50%;
-    font-size: 2rem;
-    background: none;
-    border: none;
-    cursor: pointer;
-    z-index: 1;
-    transform: translateY(-50%);
-    color: #333;
+    font-size: 1.5rem;
+    padding: 6px;
   }
-  
-  .arrow.left {
-    left: 10px;
+}
+
+@media (max-width: 480px) {
+  .carousel {
+    height: 150px;
   }
-  
-  .arrow.right {
-    right: 10px;
+
+  .arrow {
+    font-size: 1.2rem;
+    padding: 4px;
   }
-  
+}

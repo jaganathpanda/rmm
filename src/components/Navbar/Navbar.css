@@ -6,6 +6,7 @@
   padding: 10px 20px;
   color: white;
   position: relative;
+  z-index: 999;
 }
 
 .logo {
@@ -49,9 +50,9 @@
   .nav-links {
     position: absolute;
     top: 60px;
-    left: 0;
+    right: 0;
     flex-direction: column;
-    width: 100%;
+    width: 50%;
     background-color: #005f73;
     padding: 10px 0;
     display: none;
