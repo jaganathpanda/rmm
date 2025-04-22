@@ -5,9 +5,9 @@ import { getUserInfo } from "../../../utils/userSession";
 const productTypes = [
     { name: "PADDY", image: "paddy.jpeg" },
     { name: "RICE", image: "rice.jpeg" },
-    { name: "BROKEN-RICE", image: "broken_rice.png" },
-    { name: "RICE-BRAN", image: "rice_bran.png" },
-    { name: "HUSK", image: "husk.png" },
+    { name: "BROKEN-RICE", image: "broken_rice.jpeg" },
+    { name: "RICE-BRAN", image: "rice_bran.jpeg" },
+    { name: "HUSK", image: "husk.jpeg" },
 ];
 
 const SalesVoucherCardView = () => {
@@ -75,7 +75,7 @@ const SalesVoucherCardView = () => {
                         className={`type-item ${selectedType === type.name ? "active" : ""}`}
                         onClick={() => setSelectedType(type.name)}
                     >
-                        <img src={`/images/${type.image}`} alt={type.name} />
+                        <img src={`${process.env.PUBLIC_URL}/images/${type.image}`} alt={type.name} />
                         <p>{type.name}</p>
                     </div>
                 ))}
