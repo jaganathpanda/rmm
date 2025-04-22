@@ -11,7 +11,7 @@ const LoginPage = ({ setUserLoggedIn }) => {
 
   const handleLogin = async (e) => {
     e.preventDefault();
-
+    setIsLoading(true);
     try {
       const response = await axios.post(
         "https://script.google.com/macros/s/AKfycbxPTBzOQdfrmLQf9FnXT1jyCr3U_WGaNdMCuXau_PSN5etcVgtG1JhIQCuXrZ6mNOeHUA/exec",
@@ -37,6 +37,8 @@ const LoginPage = ({ setUserLoggedIn }) => {
     } catch (error) {
       console.error("Login Error", error);
       setErrorMessage("Login failed. Please try again.");
+    } finally {
+      setIsLoading(false);
     }
   };
 
