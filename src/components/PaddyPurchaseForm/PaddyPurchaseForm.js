@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import "../../utils/Form.css";
-import { getUserInfo } from "../../utils/userSession"
+import { getUserInfo } from "../../utils/userSession";
 
 
 const PaddyPurchaseForm = () => {

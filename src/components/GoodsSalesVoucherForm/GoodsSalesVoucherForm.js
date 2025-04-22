@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import "../../utils/Form.css";
+import { getUserInfo } from "../../utils/userSession";
 
 const GoodsSalesVoucherForm = () => {
   const [formData, setFormData] = useState({
@@ -31,12 +32,61 @@ const GoodsSalesVoucherForm = () => {
     });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Form Submitted:", formData);
-    // API logic here
+    const user = getUserInfo();
+    const scriptUrl = user[10];
+    const data = new FormData();
+    data.append("action", "salesVoucherInsertAction");
+    data.append("rmmUserId", user[0]); // Replace with actual user ID (from context or props)
+    data.append("typeOfGoods", formData.typeOfGoods);
+    data.append("voucherSerialNo", formData.serialNo);
+    data.append("vendorName", formData.vendorName);
+    data.append("vendorAddress", formData.vendorAddress);
+    data.append("driverName", formData.driverName);
+    data.append("vehicleNumber", formData.vehicleNumber);
+    data.append("vendorEmail", formData.vendorEmail);
+    data.append("vendorPhone", formData.vendorPhone);
+    data.append("saleDate", formData.goodsSaleDate);
+    data.append("bagPerKg", formData.bagPerKg.replace("kg", ""));
+    data.append("goodsPerKgPrice", formData.goodPerKg);
+    data.append("totalGoodsInKg", formData.totalGoods);
+    data.append("goodsCategory", formData.typeOfGoods);
+  
     if (goodsReceipt) {
-      console.log("Attached Receipt File:", goodsReceipt.name);
+      data.append("voucherReceiptImage", goodsReceipt);
+    }
+  
+    try {
+      const response = await fetch(scriptUrl, {
+        method: "POST",
+        body: data,
+      });
+  
+      const result = await response.json();
+      if (result.status==='Success') {
+        alert(result.message || "Voucher saved successfully.");
+        setFormData({
+          typeOfGoods: "",
+          serialNo: "",
+          vendorName: "",
+          vendorAddress: "",
+          driverName: "",
+          vehicleNumber: "",
+          vendorEmail: "",
+          vendorPhone: "",
+          goodsSaleDate: "",
+          bagPerKg: "50kg",
+          goodPerKg: "",
+          totalGoods: ""
+        });
+        setGoodsReceipt(null);
+      } else {
+        alert("Failed to save voucher: " + result.message);
+      }
+    } catch (error) {
+      console.error("Error submitting form:", error);
+      alert("An error occurred while saving the voucher.");
     }
   };
 
