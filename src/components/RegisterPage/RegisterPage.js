@@ -116,7 +116,7 @@ const RegistrationPage = () => {
             id="email"
             type="email"
             value={rmmEmail}
-            onChange={(e) => setRmmEmail(e.target.value)}
+            onChange={(e) => setRmmEmail(e.target.value.toLowerCase())}
             required
           />
         </div>
