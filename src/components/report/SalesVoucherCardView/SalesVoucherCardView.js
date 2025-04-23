@@ -59,7 +59,7 @@ const SalesVoucherCardView = () => {
       const matchType = type === selectedType;
       const searchMatch =
         vendorName?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        serialNo?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        serialNo?.toString().toLowerCase().includes(searchTerm.toLowerCase()) ||
         totalGoods?.toString().includes(searchTerm);
 
       return matchType && searchMatch;
@@ -160,7 +160,7 @@ const SalesVoucherCardView = () => {
 
         <input
           type="text"
-          placeholder="Search by Vendor, Serial No, or KG"
+          placeholder="Search by Vendor, Serial No, or Total Goods In KG"
           value={searchTerm}
           onChange={(e) => {
             setLoading(true);
@@ -186,7 +186,7 @@ const SalesVoucherCardView = () => {
                 <h4>{row[5]}</h4>
                 <p><strong>SNO:</strong> <span className="sno">{row[4]}</span></p>
                 <p><strong>Product:</strong> {row[3]}</p>
-                <p><strong>Goods:</strong> {row[13]} KG</p>
+                <p><strong>Total Goods(In KG):</strong> {row[13]} KG</p>
                 <p><strong>Rate (Per KG):</strong> ₹{row[14]}</p>
                 <p><strong>Total:</strong> ₹{row[16]}</p>
                 <p><strong>Purchase Date:</strong> {row[11]}</p>
