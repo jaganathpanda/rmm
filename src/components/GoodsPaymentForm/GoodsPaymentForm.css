@@ -1,0 +1,47 @@
+.payment-form {
+    max-width: 600px;
+    margin: 20px auto;
+    padding: 20px;
+    background: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  .payment-form h2 {
+    color: #0000cc;
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  
+  .payment-form p {
+    font-size: 16px;
+    font-weight: 600;
+    margin: 8px 0;
+  }
+  
+  .payment-form label {
+    display: block;
+    margin-top: 15px;
+    font-weight: bold;
+  }
+  
+  .payment-form input,
+  .payment-form select {
+    width: 100%;
+    padding: 8px;
+    margin-top: 5px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+  
+  .payment-form button {
+    margin-top: 20px;
+    width: 100%;
+    padding: 10px;
+    background: green;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+  }
+  

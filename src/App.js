@@ -15,6 +15,7 @@ import OTPVerification from "./components/OTP/OTPVerification";
 import ForgotPassword from "./components/ForgotPassword/ForgotPassword";
 import UpdatePassword from "./components/UpdatePassword/UpdatePassword";
 import SalesVoucherCardView from "./components/report/SalesVoucherCardView/SalesVoucherCardView"; 
+import GoodsPaymentForm from "./components/GoodsPaymentForm/GoodsPaymentForm"; 
 
 const App = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -46,6 +47,7 @@ const App = () => {
             <Route path="/customers" element={<Customers />} />
             <Route path="/reports" element={<Reports />} />
             <Route path="/settings" element={<Settings />} />
+            <Route path="/goodsPaymentForm" element={<GoodsPaymentForm />} />
             <Route path="/salesVoucherCardView" element={<SalesVoucherCardView />} />
             <Route path="*" element={<Navigate to="/" />} />
           </Routes>

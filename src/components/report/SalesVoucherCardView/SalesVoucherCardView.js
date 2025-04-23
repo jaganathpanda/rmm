@@ -37,6 +37,7 @@ const SalesVoucherCardView = () => {
 
         if (result.status === "Success") {
           const rawData = result.message[0];
+          const rawPaymentData = result.message[1];
           setSalesData(rawData.slice(1));
         }
       } catch (error) {
@@ -86,7 +87,7 @@ const SalesVoucherCardView = () => {
       totalGoods: row[13],
       receiptImage: row[18],
     };
-  
+
     navigate("/goodsSalesVoucherForm", { state: { editData } });
   };
 
@@ -96,19 +97,19 @@ const SalesVoucherCardView = () => {
       const user = getUserInfo();
       const scriptUrl = user[10];
       const rmmSalesVoucherId = row[0]; // Assuming [0] contains the rmmSalesVoucherId
-  
+
       const formData = new FormData();
       formData.append("action", "salesVoucherDeleteRecord");
       formData.append("salesVocherRecordId", rmmSalesVoucherId);
-  
+
       try {
         const response = await fetch(scriptUrl, {
           method: "POST",
           body: formData,
         });
-  
+
         const result = await response.json();
-  
+
         if (result.status === "Success") {
           alert("Record deleted successfully.");
           // Optionally refresh the list or remove from local state:
@@ -119,7 +120,7 @@ const SalesVoucherCardView = () => {
       } catch (error) {
         console.error("Delete error:", error);
         alert("An error occurred while deleting the record.");
-      }finally{
+      } finally {
         setLoading(false);
       }
     }
@@ -127,13 +128,18 @@ const SalesVoucherCardView = () => {
 
   const handleShare = (row) => {
     const message = `🧾 Sales Receipt\nVendor: ${row[5]}\nProduct: ${row[3]}\nGoods: ${row[13]} KG\nTotal: ₹${row[16]}`;
-    const url = `https://wa.me/?text=${encodeURIComponent(message)}`;
-    window.open(url, "_blank");
+    //const url = `https://wa.me/?text=${encodeURIComponent(message)}`;
+    const encodedMessage = encodeURIComponent(message);
+    const phone = "9970516523";
+    const whatsappURL = `https://wa.me/91${phone}?text=${encodedMessage}`;
+    window.open(whatsappURL, "_blank");
   };
 
   const handlePayment = (row) => {
-    console.log("Payment for:", row);
-    // Trigger payment logic
+    // Navigate to the Goods Payment Form with row data
+    navigate("/goodsPaymentForm", {
+      state: { row }, // Pass the row object as state
+    });
   };
 
   return (
