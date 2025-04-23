@@ -13,19 +13,20 @@ const productTypes = [
 const SalesVoucherCardView = () => {
   const user = getUserInfo();
   const scriptUrl = user[10];
+
   const [salesData, setSalesData] = useState([]);
   const [filteredData, setFilteredData] = useState([]);
   const [selectedType, setSelectedType] = useState("RICE");
   const [searchTerm, setSearchTerm] = useState("");
   const [loading, setLoading] = useState(true);
 
-  const formPayload = new FormData();
-  formPayload.append("action", "allSalesVoucherReport");
-
   useEffect(() => {
     const fetchSalesReport = async () => {
+      setLoading(true);
       try {
-        setLoading(true);
+        const formPayload = new FormData();
+        formPayload.append("action", "allSalesVoucherReport");
+
         const response = await fetch(scriptUrl, {
           method: "POST",
           body: formPayload,
@@ -35,7 +36,7 @@ const SalesVoucherCardView = () => {
 
         if (result.status === "Success") {
           const rawData = result.message[0];
-          setSalesData(rawData.slice(1)); // Skip headers
+          setSalesData(rawData.slice(1));
         }
       } catch (error) {
         console.error("Error fetching sales voucher report:", error);
@@ -66,62 +67,104 @@ const SalesVoucherCardView = () => {
     setFilteredData(filtered);
   }, [searchTerm, selectedType, salesData]);
 
+
+  const handleEdit = (row) => {
+    const editData = {
+      typeOfGoods: row[3],
+      serialNo: row[4],
+      vendorName: row[5],
+      vendorAddress: row[6],
+      driverName: row[17],
+      vehicleNumber: row[8],
+      vendorEmail: row[9],
+      vendorPhone: row[10],
+      goodsSaleDate: row[11],
+      bagPerKg: `${row[12]}kg`,
+      goodPerKg: row[14],
+      totalGoods: row[13],
+      receiptImage: row[18],
+    };
+  
+    navigate("/goodsSalesVoucherForm", { state: { editData } });
+  };
+
+  const handleDelete = (row) => {
+    if (window.confirm("Are you sure to delete this entry?")) {
+      console.log("Delete:", row);
+    }
+  };
+
+  const handleShare = (row) => {
+    const message = `🧾 Sales Receipt\nVendor: ${row[5]}\nProduct: ${row[3]}\nGoods: ${row[13]} KG\nTotal: ₹${row[16]}`;
+    const url = `https://wa.me/?text=${encodeURIComponent(message)}`;
+    window.open(url, "_blank");
+  };
+
+  const handlePayment = (row) => {
+    console.log("Payment for:", row);
+    // Trigger payment logic
+  };
+
   return (
-    <div className="sales-card-container">
-      <h2>Sales Record Details</h2>
+    <div className="sales-container">
+      <div className="left-nav">
+        <h3>Product Types</h3>
+        {productTypes.map((type) => (
+          <div
+            key={type.name}
+            className={`type-item ${selectedType === type.name ? "active" : ""}`}
+            onClick={() => setSelectedType(type.name)}
+          >
+            <img
+              src={`${process.env.PUBLIC_URL}/images/${type.image}`}
+              alt={type.name}
+            />
+            <span>{type.name}</span>
+          </div>
+        ))}
+      </div>
 
-      <div className="sales-main-layout">
-        {/* Sidebar */}
-        <div className="type-sidebar">
-          {productTypes.map((type) => (
-            <div
-              key={type.name}
-              className={`type-item ${selectedType === type.name ? "active" : ""}`}
-              onClick={() => setSelectedType(type.name)}
-            >
-              <img src={`${process.env.PUBLIC_URL}/images/${type.image}`} alt={type.name} />
-              <p>{type.name}</p>
-            </div>
-          ))}
-        </div>
+      <div className="main-content">
+        <h2>Sales Voucher Details</h2>
 
-        {/* Main Content */}
-        <div className="sales-content">
-          <input
-            type="text"
-            placeholder="Search (Vendor Name, Serial no, Total Goods KG)"
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            className="search-input"
-          />
+        <input
+          type="text"
+          placeholder="Search by Vendor, Serial No, or KG"
+          value={searchTerm}
+          onChange={(e) => {
+            setLoading(true);
+            setSearchTerm(e.target.value);
+            setTimeout(() => setLoading(false), 300); // simulate search delay
+          }}
+          className="search-input"
+        />
 
-          {loading ? (
-            <div className="loader-container">
-              <div className="loader"></div>
-              <p>Loading sales vouchers...</p>
-            </div>
-          ) : (
-            <div className="voucher-list">
-              {filteredData.length === 0 ? (
-                <p>No sales data found.</p>
-              ) : (
-                filteredData.map((row, index) => (
-                  <div className="voucher-card" key={index}>
-                    <h4>{row[5]}</h4>
-                    <p><strong>SNO:</strong> <span className="sno">{row[4]}</span></p>
-                    <p><strong>Product:</strong> {row[3]}</p>
-                    <p><strong>Goods:</strong> {row[13]} KG</p>
-                    <p><strong>Rate(Per KG):</strong> ₹{row[14]}</p>
-                    <p><strong>Total:</strong> ₹{row[16]}</p>
-                    <p><strong>Purchase Date:</strong> {row[11]}</p>
-                    <p><strong>Vehicle:</strong> {row[8]}</p>
-                    <p><strong>Driver:</strong> {row[17]}</p>
-                  </div>
-                ))
-              )}
-            </div>
-          )}
-        </div>
+        {loading ? (
+          <div className="loader">Loading...</div>
+        ) : (
+          <div className="voucher-list">
+            {filteredData.map((row, index) => (
+              <div className="voucher-card" key={index}>
+                <div className="card-actions">
+                  <button title="Edit" onClick={() => handleEdit(row)}>✏️</button>
+                  <button title="Delete" onClick={() => handleDelete(row)}>🗑️</button>
+                  <button title="Share" onClick={() => handleShare(row)}>📤</button>
+                  <button title="Payment" onClick={() => handlePayment(row)}>💰</button>
+                </div>
+
+                <h4>{row[5]}</h4>
+                <p><strong>SNO:</strong> <span className="sno">{row[4]}</span></p>
+                <p><strong>Product:</strong> {row[3]}</p>
+                <p><strong>Goods:</strong> {row[13]} KG</p>
+                <p><strong>Rate (Per KG):</strong> ₹{row[14]}</p>
+                <p><strong>Total:</strong> ₹{row[16]}</p>
+                <p><strong>Purchase Date:</strong> {row[11]}</p>
+                <p><strong>Vehicle:</strong> {row[8]}</p>
+                <p><strong>Driver:</strong> {row[7]}</p>
+              </div>
+            ))}
+          </div>
+        )}
       </div>
     </div>
   );

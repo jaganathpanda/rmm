@@ -1,66 +1,60 @@
-.sales-card-container {
-  padding: 20px;
-  font-family: Arial, sans-serif;
-}
-
-.sales-card-container h2 {
-  margin-bottom: 20px;
-  color: #005f73;
-}
-
-.sales-main-layout {
+.sales-container {
   display: flex;
+  padding: 20px;
   gap: 20px;
 }
 
-/* Sidebar */
-.type-sidebar {
+.left-nav {
   width: 200px;
   background-color: #f0f0f0;
   padding: 15px;
   border-radius: 8px;
-  height: fit-content;
+}
+
+.left-nav h3 {
+  margin-bottom: 15px;
+  color: #005f73;
 }
 
 .type-item {
   display: flex;
-  flex-direction: column;
   align-items: center;
-  margin-bottom: 15px;
-  padding: 10px;
+  padding: 8px;
   cursor: pointer;
-  border-radius: 8px;
-  transition: background-color 0.3s ease;
+  border-radius: 6px;
+  margin-bottom: 10px;
+  transition: background-color 0.2s ease;
 }
 
 .type-item img {
-  width: 60px;
-  height: 60px;
-  object-fit: contain;
-  margin-bottom: 8px;
+  width: 30px;
+  height: 30px;
+  margin-right: 10px;
 }
 
-.type-item p {
-  margin: 0;
+.type-item.active,
+.type-item:hover {
+  background-color: #c2f0f4;
+  font-weight: bold;
 }
 
-.type-item.active {
-  background-color: #005f73;
-  color: white;
-}
-
-/* Main Content */
-.sales-content {
+.main-content {
   flex: 1;
 }
 
 .search-input {
   width: 100%;
-  padding: 10px 14px;
-  font-size: 16px;
-  margin-bottom: 20px;
-  border-radius: 6px;
+  padding: 10px;
+  margin: 15px 0;
   border: 1px solid #ccc;
+  border-radius: 6px;
+}
+
+.loader {
+  text-align: center;
+  font-size: 18px;
+  color: #888;
+  margin-top: 20px;
 }
 
 .voucher-list {
@@ -70,60 +64,72 @@
 }
 
 .voucher-card {
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  padding: 15px;
   background-color: #fff;
-  box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.05);
+  padding: 15px;
+  border-radius: 10px;
+  position: relative;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
 .voucher-card h4 {
-  margin: 0 0 8px;
-  color: #333;
+  margin-bottom: 10px;
+  color: #005f73;
 }
 
 .voucher-card p {
-  margin: 4px 0;
+  margin: 5px 0;
   font-size: 14px;
 }
 
-/* Loader */
-.loader-container {
+.sno {
+  background-color: #eee;
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+
+.card-actions {
+  position: absolute;
+  top: 10px;
+  right: 10px;
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin-top: 40px;
+  gap: 6px;
+  z-index: 2;
 }
 
-.loader {
-  border: 5px solid #f3f3f3;
-  border-top: 5px solid #005f73;
-  border-radius: 50%;
-  width: 40px;
-  height: 40px;
-  animation: spin 1s linear infinite;
-  margin-bottom: 10px;
+.card-actions button {
+  background-color: #e0f7fa;
+  border: none;
+  border-radius: 4px;
+  padding: 5px;
+  cursor: pointer;
+  font-size: 14px;
 }
 
-@keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
+.card-actions button:hover {
+  background-color: #b2ebf2;
 }
 
-/* Responsive */
 @media (max-width: 768px) {
-  .sales-main-layout {
+  .sales-container {
     flex-direction: column;
   }
 
-  .type-sidebar {
+  .left-nav {
     width: 100%;
     display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
+    overflow-x: auto;
+    padding: 10px;
   }
 
   .type-item {
-    margin: 10px;
+    flex-direction: column;
+    align-items: center;
+    padding: 6px;
+    margin-right: 10px;
+    white-space: nowrap;
+  }
+
+  .main-content {
+    width: 100%;
   }
 }

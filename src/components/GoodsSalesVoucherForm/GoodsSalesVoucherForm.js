@@ -103,11 +103,11 @@ const GoodsSalesVoucherForm = () => {
           required
         >
           <option value="">TYPE OF GOODS</option>
-          <option value="Paddy">PADDY</option>
-          <option value="Rice">RICE</option>
-          <option value="BrokenRice">BROKEN-RICE</option>
-          <option value="Ricebran">RICE-BRAN</option>
-          <option value="Husk">HUSK</option>
+          <option value="PADDY">PADDY</option>
+          <option value="RICE">RICE</option>
+          <option value="BROKEN-RICE">BROKEN-RICE</option>
+          <option value="RICE-BRAN">RICE-BRAN</option>
+          <option value="HUSK">HUSK</option>
           <option value="Other">Other</option>
         </select>
 
