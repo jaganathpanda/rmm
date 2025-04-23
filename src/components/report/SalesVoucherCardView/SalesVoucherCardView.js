@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import "./SalesVoucherCardView.css";
 import { getUserInfo } from "../../../utils/userSession";
 
@@ -13,7 +14,7 @@ const productTypes = [
 const SalesVoucherCardView = () => {
   const user = getUserInfo();
   const scriptUrl = user[10];
-
+  const navigate = useNavigate();
   const [salesData, setSalesData] = useState([]);
   const [filteredData, setFilteredData] = useState([]);
   const [selectedType, setSelectedType] = useState("RICE");
@@ -70,6 +71,7 @@ const SalesVoucherCardView = () => {
 
   const handleEdit = (row) => {
     const editData = {
+      rmmSalesVoucherId: row[0],
       typeOfGoods: row[3],
       serialNo: row[4],
       vendorName: row[5],

@@ -1,8 +1,15 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useLocation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import "../../utils/Form.css";
 import { getUserInfo } from "../../utils/userSession";
 
 const GoodsSalesVoucherForm = () => {
+  const { state } = useLocation();
+  const editData = state?.editData || null;
+  const isEditMode = !!editData;
+  const navigate = useNavigate();
+
   const [formData, setFormData] = useState({
     typeOfGoods: "",
     serialNo: "",
@@ -17,7 +24,15 @@ const GoodsSalesVoucherForm = () => {
     goodPerKg: "",
     totalGoods: ""
   });
+
   const [goodsReceipt, setGoodsReceipt] = useState(null);
+
+  // Prefill form in edit mode
+  useEffect(() => {
+    if (isEditMode) {
+      setFormData(editData);
+    }
+  }, [editData, isEditMode]);
 
   const handleFileChange = (e) => {
     const file = e.target.files[0];
@@ -37,8 +52,11 @@ const GoodsSalesVoucherForm = () => {
     const user = getUserInfo();
     const scriptUrl = user[10];
     const data = new FormData();
-    data.append("action", "salesVoucherInsertAction");
-    data.append("rmmUserId", user[0]); // Replace with actual user ID (from context or props)
+    if (isEditMode) {
+      data.append("rmmSalesVoucherId", editData.rmmSalesVoucherId);
+    }
+    data.append("action", isEditMode ? "salesVoucherUpdateAction" : "salesVoucherInsertAction");
+    data.append("rmmUserId", user[0]);
     data.append("typeOfGoods", formData.typeOfGoods);
     data.append("voucherSerialNo", formData.serialNo);
     data.append("vendorName", formData.vendorName);
@@ -52,20 +70,24 @@ const GoodsSalesVoucherForm = () => {
     data.append("goodsPerKgPrice", formData.goodPerKg);
     data.append("totalGoodsInKg", formData.totalGoods);
     data.append("goodsCategory", formData.typeOfGoods);
-  
+
     if (goodsReceipt) {
       data.append("voucherReceiptImage", goodsReceipt);
     }
-  
+
     try {
       const response = await fetch(scriptUrl, {
         method: "POST",
         body: data,
       });
-  
+
       const result = await response.json();
-      if (result.status==='Success') {
-        alert(result.message || "Voucher saved successfully.");
+      if (result.status === 'Success') {
+        if (isEditMode) {
+          alert("Record updated successfully!");
+        } else {
+          alert(result.message || "Voucher saved successfully.");
+        }
         setFormData({
           typeOfGoods: "",
           serialNo: "",
@@ -81,6 +103,7 @@ const GoodsSalesVoucherForm = () => {
           totalGoods: ""
         });
         setGoodsReceipt(null);
+        navigate("/salesVoucherCardView");
       } else {
         alert("Failed to save voucher: " + result.message);
       }
@@ -92,7 +115,7 @@ const GoodsSalesVoucherForm = () => {
 
   return (
     <div className="sales-voucher-container">
-      <h2 className="form-title">GOODS SALES VOUCHER</h2>
+      <h2 className="form-title">{isEditMode ? "EDIT SALES VOUCHER" : "GOODS SALES VOUCHER"}</h2>
       <form onSubmit={handleSubmit} className="sales-voucher-form">
 
         <label>TYPE OF GOODS</label>
@@ -208,6 +231,7 @@ const GoodsSalesVoucherForm = () => {
           value={formData.totalGoods}
           onChange={handleChange}
         />
+
         <label>ADD GOODS RECEIPT</label>
         <input
           type="file"
@@ -220,7 +244,7 @@ const GoodsSalesVoucherForm = () => {
           </p>
         )}
 
-        <button type="submit">SAVE</button>
+        <button type="submit">{isEditMode ? "UPDATE" : "SAVE"}</button>
       </form>
     </div>
   );
