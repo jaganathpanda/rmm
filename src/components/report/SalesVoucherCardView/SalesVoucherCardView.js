@@ -90,9 +90,38 @@ const SalesVoucherCardView = () => {
     navigate("/goodsSalesVoucherForm", { state: { editData } });
   };
 
-  const handleDelete = (row) => {
+  const handleDelete = async (row) => {
     if (window.confirm("Are you sure to delete this entry?")) {
-      console.log("Delete:", row);
+      setLoading(true);
+      const user = getUserInfo();
+      const scriptUrl = user[10];
+      const rmmSalesVoucherId = row[0]; // Assuming [0] contains the rmmSalesVoucherId
+  
+      const formData = new FormData();
+      formData.append("action", "salesVoucherDeleteRecord");
+      formData.append("salesVocherRecordId", rmmSalesVoucherId);
+  
+      try {
+        const response = await fetch(scriptUrl, {
+          method: "POST",
+          body: formData,
+        });
+  
+        const result = await response.json();
+  
+        if (result.status === "Success") {
+          alert("Record deleted successfully.");
+          // Optionally refresh the list or remove from local state:
+          setSalesData((prev) => prev.filter((item) => item[0] !== rmmSalesVoucherId));
+        } else {
+          alert("Delete failed: " + result.message);
+        }
+      } catch (error) {
+        console.error("Delete error:", error);
+        alert("An error occurred while deleting the record.");
+      }finally{
+        setLoading(false);
+      }
     }
   };
 
