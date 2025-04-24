@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import "./SalesVoucherCardView.css";
 import { getUserInfo } from "../../../utils/userSession";
@@ -21,8 +21,9 @@ const SalesVoucherCardView = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [loading, setLoading] = useState(true);
   const [showPopup, setShowPopup] = useState(false);
-  const [selectedPayments, setSelectedPayments] = useState({ data: [], totalAmount: 0, paidAmount : 0 , pendingAmount: 0});
+  const [selectedPayments, setSelectedPayments] = useState({ data: [], totalAmount: 0, paidAmount: 0, pendingAmount: 0 });
   const [paymentData, setPaymentData] = useState([]);
+  const paymentRefs = useRef({});
 
   useEffect(() => {
     const fetchSalesReport = async () => {
@@ -73,9 +74,53 @@ const SalesVoucherCardView = () => {
     setFilteredData(filtered);
   }, [searchTerm, selectedType, salesData]);
 
-  const handleShowPayments = (voucherId, totalAmount,paidAmount,pendingAmount) => {
+  const handleDownloadCardPaymentDetails = (voucherId, vendorName,totalAmount,paidAmount, pendingAmount) => {
+    const paymentDataForVoucher = paymentData.filter((p) => p[3] === voucherId);
+    const content = `
+      <div style="padding:20px;font-family:Arial">
+        <h2>💰 Payment Details</h2>
+        <p><strong>Vendor:</strong> ${vendorName}</p>
+        <table border="1" cellpadding="10" cellspacing="0" width="100%">
+          <thead>
+            <tr>
+              <th>Paid Amount</th>
+              <th>Payment Type</th>
+              <th>Date</th>
+              <th>Remark</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${paymentDataForVoucher.map(
+      (p) => `
+              <tr>
+                <td>₹${p[6]}</td>
+                <td>${p[7]}</td>
+                <td>${p[8]}</td>
+                <td>${p[5]}</td>
+              </tr>
+            `
+    ).join("")}
+          </tbody>
+        </table>
+  
+        <div style="margin-top:20px">
+          <p><strong>Total Goods Amount:</strong> ₹${totalAmount}</p>
+          <p><strong>Total Paid:</strong> ₹${paidAmount}</p>
+          <p><strong>Pending Amount:</strong> ₹${pendingAmount}</p>
+        </div>
+      </div>
+    `;
+
+    const printWindow = window.open("", "_blank");
+    printWindow.document.write(`<html><head><title>Payment Details</title></head><body>${content}</body></html>`);
+    printWindow.document.close();
+    printWindow.print();
+  };
+
+
+  const handleShowPayments = (voucherId, totalAmount, paidAmount, pendingAmount) => {
     const filtered = paymentData.filter((payRow) => payRow[3] === voucherId);
-    setSelectedPayments({ data: filtered, totalAmount,paidAmount,pendingAmount});
+    setSelectedPayments({ data: filtered, totalAmount, paidAmount, pendingAmount });
 
     setShowPopup(true);
   };
@@ -147,43 +192,43 @@ const SalesVoucherCardView = () => {
 
   return (
     <>
-    {showPopup && (
-      <div className="popup-overlay" onClick={() => setShowPopup(false)}>
-        <div className="popup" onClick={(e) => e.stopPropagation()}>
-          <h3>💰 Payment Details</h3>
-          <table>
-            <thead>
-              <tr>
-                <th>Paid Amount</th>
-                <th>Payment Type</th>
-                <th>Date</th>
-                <th>Remark</th>
-              </tr>
-            </thead>
-            <tbody>
-              {selectedPayments.data.map((pay, i) => (
-                <tr key={i}>
-                  <td>₹{pay[6]}</td>
-                  <td>{pay[7]}</td>
-                  <td>{(pay[8])}</td>
-                  <td>{pay[5]}</td>
+      {showPopup && (
+        <div className="popup-overlay" onClick={() => setShowPopup(false)}>
+          <div className="popup" onClick={(e) => e.stopPropagation()}>
+            <h3>💰 Payment Details</h3>
+            <table>
+              <thead>
+                <tr>
+                  <th>Paid Amount</th>
+                  <th>Payment Type</th>
+                  <th>Date</th>
+                  <th>Remark</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
-          <p><strong>Total Goods Amount:</strong> ₹{selectedPayments.totalAmount}</p>
-          <p>
-            <strong>Total Paid:</strong> ₹
-            {selectedPayments.paidAmount}
-          </p>
-          <p>
-            <strong>Pending:</strong> ₹
-            {selectedPayments.pendingAmount}
-          </p>
-          <button onClick={() => setShowPopup(false)}>Close</button>
+              </thead>
+              <tbody>
+                {selectedPayments.data.map((pay, i) => (
+                  <tr key={i}>
+                    <td>₹{pay[6]}</td>
+                    <td>{pay[7]}</td>
+                    <td>{(pay[8])}</td>
+                    <td>{pay[5]}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+            <p><strong>Total Goods Amount:</strong> ₹{selectedPayments.totalAmount}</p>
+            <p>
+              <strong>Total Paid:</strong> ₹
+              {selectedPayments.paidAmount}
+            </p>
+            <p>
+              <strong>Pending:</strong> ₹
+              {selectedPayments.pendingAmount}
+            </p>
+            <button onClick={() => setShowPopup(false)}>Close</button>
+          </div>
         </div>
-      </div>
-    )}
+      )}
 
       <div className="sales-container">
         <div className="left-nav">
@@ -250,8 +295,11 @@ const SalesVoucherCardView = () => {
                     <p><strong>Purchase Date:</strong> {row[11]}</p>
                     <p><strong>Vehicle:</strong> {row[8]}</p>
                     <p><strong>Driver:</strong> {row[7]}</p>
-                    <button onClick={() => handleShowPayments(row[0], totalAmount,paidAmount,pendingAmount)}>
+                    <button onClick={() => handleShowPayments(row[0], totalAmount, paidAmount, pendingAmount)}>
                       📑 View Payments
+                    </button>
+                    <button onClick={() => handleDownloadCardPaymentDetails(row[0], row[5],totalAmount,paidAmount, pendingAmount)}>
+                      📥 Download Payment Details
                     </button>
                   </div>
                 );
