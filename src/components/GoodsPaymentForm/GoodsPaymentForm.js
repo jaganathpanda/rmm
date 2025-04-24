@@ -1,21 +1,24 @@
 import React, { useState } from "react";
-import { useNavigate ,useLocation} from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import "./GoodsPaymentForm.css";
 import { getUserInfo } from "../../utils/userSession";
+import { formatDateDDMMYYYY } from "../../utils/dateUtils";
+import DateInput  from "../../utils/DateInput";
 
 const GoodsPaymentForm = () => {
     const user = getUserInfo();
     const scriptUrl = user[10];
     const location = useLocation();
-    const rawData  = location.state.row || {};
+    const rawData = location.state.row || {};
     const navigate = useNavigate();
+    
     const [paymentAmount, setPaymentAmount] = useState("");
     const [paymentType, setPaymentType] = useState("");
     const [paymentDate, setPaymentDate] = useState("");
     const [remark, setRemark] = useState("");
 
-    const totalAmount = rawData[16];
-    const totalPaid = rawData[20];
+    const totalAmount = Number(rawData[16] || 0);
+    const totalPaid = Number(rawData[20] || 0);
     const vendorMobile = rawData[10];
     const vendorName = rawData[5];
     const serialNo = rawData[4];
@@ -30,7 +33,7 @@ const GoodsPaymentForm = () => {
                 body: new URLSearchParams({
                     action: "receiveAmountAgainstGoods",
                     saleVoucherId: rawData[0],
-                    rmmUserId: rawData[2], // Replace with actual rmmUserId if stored elsewhere
+                    rmmUserId: rawData[2], // Make sure this is correct
                     paidAmount: paymentAmount,
                     paymentType,
                     paymentDate,
@@ -52,16 +55,15 @@ const GoodsPaymentForm = () => {
         }
     };
 
-
     return (
         <div className="payment-form">
             <h2>GOODS PAYMENT</h2>
             <p><strong>TYPE OF GOODS:</strong> {typeOfGoods}</p>
             <p><strong>VENDOR NAME:</strong> {vendorName}</p>
             <p><strong>VENDOR MOBILE:</strong> {vendorMobile}</p>
-            <p><strong>TOTAL GOODS AMOUNT:</strong> {totalAmount}</p>
-            <p><strong>TOTAL AMOUNT PAID:</strong> {totalPaid}</p>
-            <p><strong>TOTAL PENDING AMOUNT:</strong> {totalAmount - totalPaid}</p>
+            <p><strong>TOTAL GOODS AMOUNT:</strong> ₹{totalAmount}</p>
+            <p><strong>TOTAL AMOUNT PAID:</strong> ₹{totalPaid}</p>
+            <p><strong>TOTAL PENDING AMOUNT:</strong> ₹{totalAmount - totalPaid}</p>
             <p><strong>GOODS SERIAL NO:</strong> {serialNo}</p>
 
             <form onSubmit={handleSubmit}>
@@ -85,12 +87,11 @@ const GoodsPaymentForm = () => {
                     <option value="ONLINE">Online</option>
                 </select>
 
-                <label>PAYMENT DATE</label>
-                <input
-                    type="date"
+                <DateInput
+                    label="PAYMENT DATE"
+                    name="paymentDate"
                     value={paymentDate}
                     onChange={(e) => setPaymentDate(e.target.value)}
-                    required
                 />
 
                 <label>ANY REMARK</label>

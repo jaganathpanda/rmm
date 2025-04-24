@@ -165,7 +165,7 @@ const SalesVoucherCardView = () => {
                 <tr key={i}>
                   <td>₹{pay[6]}</td>
                   <td>{pay[7]}</td>
-                  <td>{formatDateDDMMYYYY(pay[8])}</td>
+                  <td>{(pay[8])}</td>
                   <td>{pay[5]}</td>
                 </tr>
               ))}
