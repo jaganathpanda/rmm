@@ -131,7 +131,7 @@ const SalesVoucherCardView = () => {
     const message = `🧾 Sales Receipt\nVendor: ${row[5]}\nProduct: ${row[3]}\nGoods: ${row[13]} KG\nTotal: ₹${row[16]}`;
     //const url = `https://wa.me/?text=${encodeURIComponent(message)}`;
     const encodedMessage = encodeURIComponent(message);
-    const phone = "9970516523";
+    const phone = row[10];
     const whatsappURL = `https://wa.me/91${phone}?text=${encodedMessage}`;
     window.open(whatsappURL, "_blank");
   };
