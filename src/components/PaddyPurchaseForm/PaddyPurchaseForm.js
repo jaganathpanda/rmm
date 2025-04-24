@@ -99,14 +99,6 @@ const PaddyPurchaseForm = () => {
     <div className="purchase-form-container">
       <h2 className="form-title">PADDY PURCHASE FORM</h2>
       <form onSubmit={handleSubmit} className="purchase-form">
-        <label>SERIAL NO.</label>
-        <input
-          type="text"
-          name="serialNo"
-          value={formData.serialNo}
-          onChange={handleChange}
-          required
-        />
         <label>COLLECTION CENTER</label>
         <select
           name="collectionCenter"
@@ -115,10 +107,18 @@ const PaddyPurchaseForm = () => {
           required
         >
           <option value="">Select Collection Center</option>
-          <option value="Local">Local</option>
+          <option value="Local">Farmer/Local Business Vendor</option>
           <option value="Mandi">Mandi</option>
           <option value="Own">Own</option>
         </select>
+        <label>SERIAL NO.</label>
+        <input
+          type="text"
+          name="serialNo"
+          value={formData.serialNo}
+          onChange={handleChange}
+          required
+        />
 
         <label>FARMER NAME</label>
         <input

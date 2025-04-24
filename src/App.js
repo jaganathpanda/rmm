@@ -5,6 +5,7 @@ import Navbar from "./components/Navbar/Navbar";
 import Home from "./components/Home/Home";
 import Inventory from "./components/Inventory/Inventory";
 import PaddyPurchaseForm from "./components/PaddyPurchaseForm/PaddyPurchaseForm";
+import ViewTransitPassForm from "./components/ViewTransitPassForm/ViewTransitPassForm";
 import GoodsSalesVoucherForm from "./components/GoodsSalesVoucherForm/GoodsSalesVoucherForm";
 import Customers from "./components/Customers/Customers";
 import Reports from "./components/Reports/Reports";
@@ -43,6 +44,7 @@ const App = () => {
             <Route path="/profile" element={<Profile />} />
             <Route path="/inventory" element={<Inventory />} />
             <Route path="/paddyPurchaseForm" element={<PaddyPurchaseForm />} />
+            <Route path="/viewTransitPassForm" element={<ViewTransitPassForm />} />
             <Route path="/goodsSalesVoucherForm" element={<GoodsSalesVoucherForm />} />
             <Route path="/customers" element={<Customers />} />
             <Route path="/reports" element={<Reports />} />
