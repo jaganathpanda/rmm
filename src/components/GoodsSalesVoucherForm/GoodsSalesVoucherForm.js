@@ -3,6 +3,7 @@ import { useLocation } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import "../../utils/Form.css";
 import { getUserInfo } from "../../utils/userSession";
+import DateInput from "../../utils/DateInput";
 
 const GoodsSalesVoucherForm = () => {
   const { state } = useLocation();
@@ -192,9 +193,8 @@ const GoodsSalesVoucherForm = () => {
           onChange={handleChange}
         />
 
-        <label>GOODS SALE DATE</label>
-        <input
-          type="date"
+        <DateInput
+          label="GOODS SALE DATE"
           name="goodsSaleDate"
           value={formData.goodsSaleDate}
           onChange={handleChange}

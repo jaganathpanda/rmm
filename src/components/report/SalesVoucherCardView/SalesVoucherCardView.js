@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./SalesVoucherCardView.css";
 import { getUserInfo } from "../../../utils/userSession";
+import { formatDateDDMMYYYY , formatDateYYYYMMDD} from "../../../utils/dateUtils";
 
 const productTypes = [
   { name: "PADDY", image: "paddy.jpeg" },
@@ -77,7 +78,7 @@ const SalesVoucherCardView = () => {
       serialNo: row[4],
       vendorName: row[5],
       vendorAddress: row[6],
-      driverName: row[17],
+      driverName: row[7],
       vehicleNumber: row[8],
       vendorEmail: row[9],
       vendorPhone: row[10],
@@ -180,26 +181,39 @@ const SalesVoucherCardView = () => {
           <div className="loader">Loading...</div>
         ) : (
           <div className="voucher-list">
-            {filteredData.map((row, index) => (
-              <div className="voucher-card" key={index}>
-                <div className="card-actions">
-                  <button title="Edit" onClick={() => handleEdit(row)}>✏️</button>
-                  <button title="Delete" onClick={() => handleDelete(row)}>🗑️</button>
-                  <button title="Share" onClick={() => handleShare(row)}>📤</button>
-                  <button title="Payment" onClick={() => handlePayment(row)}>💰</button>
-                </div>
+            {filteredData.map((row, index) => {
+              const totalAmount = Number(row[16] || 0);
+              const paidAmount = Number(row[20] || 0);
+              const pendingAmount = totalAmount - paidAmount;
 
-                <h4>{row[5]}</h4>
-                <p><strong>SNO:</strong> <span className="sno">{row[4]}</span></p>
-                <p><strong>Product:</strong> {row[3]}</p>
-                <p><strong>Total Goods(In KG):</strong> {row[13]} KG</p>
-                <p><strong>Rate (Per KG):</strong> ₹{row[14]}</p>
-                <p><strong>Total:</strong> ₹{row[16]}</p>
-                <p><strong>Purchase Date:</strong> {row[11]}</p>
-                <p><strong>Vehicle:</strong> {row[8]}</p>
-                <p><strong>Driver:</strong> {row[7]}</p>
-              </div>
-            ))}
+              let cardStatusClass = "card-default";
+              if (pendingAmount > 0) cardStatusClass = "card-red";
+              else if (pendingAmount < 0) cardStatusClass = "card-orange";
+              else cardStatusClass = "card-green";
+
+              return (
+                <div className={`voucher-card ${cardStatusClass}`} key={index}>
+                  <div className="card-actions">
+                    <button title="Edit" onClick={() => handleEdit(row)}>✏️</button>
+                    <button title="Delete" onClick={() => handleDelete(row)}>🗑️</button>
+                    <button title="Share" onClick={() => handleShare(row)}>📤</button>
+                    <button title="Payment" onClick={() => handlePayment(row)}>💰</button>
+                  </div>
+
+                  <h4>{row[5]}</h4>
+                  <p><strong>SNO:</strong> <span className="sno">{row[4]}</span></p>
+                  <p><strong>Product:</strong> {row[3]}</p>
+                  <p><strong>Total Goods(In KG):</strong> {row[13]} KG</p>
+                  <p><strong>Rate (Per KG):</strong> ₹{row[14]}</p>
+                  <p><strong>Total Goods Amount:</strong> ₹{totalAmount}</p>
+                  <p><strong>Total Goods Received Amount:</strong> ₹{paidAmount}</p>
+                  <p><strong>Total Goods Pending Amount:</strong> ₹{pendingAmount}</p>
+                  <p><strong>Purchase Date:</strong> {row[11]}</p>
+                  <p><strong>Vehicle:</strong> {row[8]}</p>
+                  <p><strong>Driver:</strong> {row[7]}</p>
+                </div>
+              );
+            })}
           </div>
         )}
       </div>

@@ -1,9 +1,11 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { useLocation } from "react-router-dom";
+import { useNavigate ,useLocation} from "react-router-dom";
 import "./GoodsPaymentForm.css";
+import { getUserInfo } from "../../utils/userSession";
 
 const GoodsPaymentForm = () => {
+    const user = getUserInfo();
+    const scriptUrl = user[10];
     const location = useLocation();
     const rawData  = location.state.row || {};
     const navigate = useNavigate();
@@ -23,12 +25,12 @@ const GoodsPaymentForm = () => {
         e.preventDefault();
 
         try {
-            const res = await fetch("YOUR_APPS_SCRIPT_WEB_APP_URL", {
+            const res = await fetch(scriptUrl, {
                 method: "POST",
                 body: new URLSearchParams({
                     action: "receiveAmountAgainstGoods",
                     saleVoucherId: rawData[0],
-                    rmmUserId: rawData[1], // Replace with actual rmmUserId if stored elsewhere
+                    rmmUserId: rawData[2], // Replace with actual rmmUserId if stored elsewhere
                     paidAmount: paymentAmount,
                     paymentType,
                     paymentDate,
