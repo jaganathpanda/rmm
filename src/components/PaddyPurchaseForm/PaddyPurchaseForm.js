@@ -107,6 +107,18 @@ const PaddyPurchaseForm = () => {
           onChange={handleChange}
           required
         />
+        <label>COLLECTION CENTER</label>
+        <select
+          name="collectionCenter"
+          value={formData.collectionCenter}
+          onChange={handleChange}
+          required
+        >
+          <option value="">Select Collection Center</option>
+          <option value="Local">Local</option>
+          <option value="Mandi">Mandi</option>
+          <option value="Own">Own</option>
+        </select>
 
         <label>FARMER NAME</label>
         <input
@@ -189,19 +201,6 @@ const PaddyPurchaseForm = () => {
           <option value="Sona Mossori">Sona Mossori</option>
           <option value="HMT">HMT</option>
           <option value="Other">Other</option>
-        </select>
-
-        <label>COLLECTION CENTER</label>
-        <select
-          name="collectionCenter"
-          value={formData.collectionCenter}
-          onChange={handleChange}
-          required
-        >
-          <option value="">Select Collection Center</option>
-          <option value="Local">Local</option>
-          <option value="Mandi">Mandi</option>
-          <option value="Own">Own</option>
         </select>
 
         <label>ADD PADDY RECEIPT</label>

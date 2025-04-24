@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./SalesVoucherCardView.css";
 import { getUserInfo } from "../../../utils/userSession";
-import { formatDateDDMMYYYY , formatDateYYYYMMDD} from "../../../utils/dateUtils";
+import { formatDateDDMMYYYY } from "../../../utils/dateUtils";
 
 const productTypes = [
   { name: "PADDY", image: "paddy.jpeg" },
@@ -11,7 +11,6 @@ const productTypes = [
   { name: "RICE-BRAN", image: "rice_bran.jpeg" },
   { name: "HUSK", image: "husk.jpeg" },
 ];
-
 const SalesVoucherCardView = () => {
   const user = getUserInfo();
   const scriptUrl = user[10];
@@ -21,6 +20,9 @@ const SalesVoucherCardView = () => {
   const [selectedType, setSelectedType] = useState("RICE");
   const [searchTerm, setSearchTerm] = useState("");
   const [loading, setLoading] = useState(true);
+  const [showPopup, setShowPopup] = useState(false);
+  const [selectedPayments, setSelectedPayments] = useState({ data: [], totalAmount: 0, paidAmount : 0 , pendingAmount: 0});
+  const [paymentData, setPaymentData] = useState([]);
 
   useEffect(() => {
     const fetchSalesReport = async () => {
@@ -40,6 +42,7 @@ const SalesVoucherCardView = () => {
           const rawData = result.message[0];
           const rawPaymentData = result.message[1];
           setSalesData(rawData.slice(1));
+          setPaymentData(rawPaymentData.slice(1));
         }
       } catch (error) {
         console.error("Error fetching sales voucher report:", error);
@@ -70,6 +73,12 @@ const SalesVoucherCardView = () => {
     setFilteredData(filtered);
   }, [searchTerm, selectedType, salesData]);
 
+  const handleShowPayments = (voucherId, totalAmount,paidAmount,pendingAmount) => {
+    const filtered = paymentData.filter((payRow) => payRow[3] === voucherId);
+    setSelectedPayments({ data: filtered, totalAmount,paidAmount,pendingAmount});
+
+    setShowPopup(true);
+  };
 
   const handleEdit = (row) => {
     const editData = {
@@ -95,9 +104,7 @@ const SalesVoucherCardView = () => {
   const handleDelete = async (row) => {
     if (window.confirm("Are you sure to delete this entry?")) {
       setLoading(true);
-      const user = getUserInfo();
-      const scriptUrl = user[10];
-      const rmmSalesVoucherId = row[0]; // Assuming [0] contains the rmmSalesVoucherId
+      const rmmSalesVoucherId = row[0];
 
       const formData = new FormData();
       formData.append("action", "salesVoucherDeleteRecord");
@@ -113,7 +120,6 @@ const SalesVoucherCardView = () => {
 
         if (result.status === "Success") {
           alert("Record deleted successfully.");
-          // Optionally refresh the list or remove from local state:
           setSalesData((prev) => prev.filter((item) => item[0] !== rmmSalesVoucherId));
         } else {
           alert("Delete failed: " + result.message);
@@ -129,7 +135,6 @@ const SalesVoucherCardView = () => {
 
   const handleShare = (row) => {
     const message = `🧾 Sales Receipt\nVendor: ${row[5]}\nProduct: ${row[3]}\nGoods: ${row[13]} KG\nTotal: ₹${row[16]}`;
-    //const url = `https://wa.me/?text=${encodeURIComponent(message)}`;
     const encodedMessage = encodeURIComponent(message);
     const phone = row[10];
     const whatsappURL = `https://wa.me/91${phone}?text=${encodedMessage}`;
@@ -137,87 +142,125 @@ const SalesVoucherCardView = () => {
   };
 
   const handlePayment = (row) => {
-    // Navigate to the Goods Payment Form with row data
-    navigate("/goodsPaymentForm", {
-      state: { row }, // Pass the row object as state
-    });
+    navigate("/goodsPaymentForm", { state: { row } });
   };
 
   return (
-    <div className="sales-container">
-      <div className="left-nav">
-        <h3>Product Types</h3>
-        {productTypes.map((type) => (
-          <div
-            key={type.name}
-            className={`type-item ${selectedType === type.name ? "active" : ""}`}
-            onClick={() => setSelectedType(type.name)}
-          >
-            <img
-              src={`${process.env.PUBLIC_URL}/images/${type.image}`}
-              alt={type.name}
-            />
-            <span>{type.name}</span>
-          </div>
-        ))}
+    <>
+    {showPopup && (
+      <div className="popup-overlay" onClick={() => setShowPopup(false)}>
+        <div className="popup" onClick={(e) => e.stopPropagation()}>
+          <h3>💰 Payment Details</h3>
+          <table>
+            <thead>
+              <tr>
+                <th>Paid Amount</th>
+                <th>Payment Type</th>
+                <th>Date</th>
+                <th>Remark</th>
+              </tr>
+            </thead>
+            <tbody>
+              {selectedPayments.data.map((pay, i) => (
+                <tr key={i}>
+                  <td>₹{pay[6]}</td>
+                  <td>{pay[7]}</td>
+                  <td>{formatDateDDMMYYYY(pay[8])}</td>
+                  <td>{pay[5]}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+          <p><strong>Total Goods Amount:</strong> ₹{selectedPayments.totalAmount}</p>
+          <p>
+            <strong>Total Paid:</strong> ₹
+            {selectedPayments.paidAmount}
+          </p>
+          <p>
+            <strong>Pending:</strong> ₹
+            {selectedPayments.pendingAmount}
+          </p>
+          <button onClick={() => setShowPopup(false)}>Close</button>
+        </div>
       </div>
+    )}
 
-      <div className="main-content">
-        <h2>Sales Voucher Details</h2>
+      <div className="sales-container">
+        <div className="left-nav">
+          <h3>Product Types</h3>
+          {productTypes.map((type) => (
+            <div
+              key={type.name}
+              className={`type-item ${selectedType === type.name ? "active" : ""}`}
+              onClick={() => setSelectedType(type.name)}
+            >
+              <img
+                src={`${process.env.PUBLIC_URL}/images/${type.image}`}
+                alt={type.name}
+              />
+              <span>{type.name}</span>
+            </div>
+          ))}
+        </div>
 
-        <input
-          type="text"
-          placeholder="Search by Vendor, Serial No, or Total Goods In KG"
-          value={searchTerm}
-          onChange={(e) => {
-            setLoading(true);
-            setSearchTerm(e.target.value);
-            setTimeout(() => setLoading(false), 300); // simulate search delay
-          }}
-          className="search-input"
-        />
+        <div className="main-content">
+          <h2>Sales Voucher Details</h2>
 
-        {loading ? (
-          <div className="loader">Loading...</div>
-        ) : (
-          <div className="voucher-list">
-            {filteredData.map((row, index) => {
-              const totalAmount = Number(row[16] || 0);
-              const paidAmount = Number(row[20] || 0);
-              const pendingAmount = totalAmount - paidAmount;
+          <input
+            type="text"
+            placeholder="Search by Vendor, Serial No, or Total Goods In KG"
+            value={searchTerm}
+            onChange={(e) => {
+              setSearchTerm(e.target.value);
+            }}
+            className="search-input"
+          />
 
-              let cardStatusClass = "card-default";
-              if (pendingAmount > 0) cardStatusClass = "card-red";
-              else if (pendingAmount < 0) cardStatusClass = "card-orange";
-              else cardStatusClass = "card-green";
+          {loading ? (
+            <div className="loader">Loading...</div>
+          ) : (
+            <div className="voucher-list">
+              {filteredData.map((row, index) => {
+                const totalAmount = Number(row[16] || 0);
+                const paidAmount = Number(row[20] || 0);
+                const pendingAmount = totalAmount - paidAmount;
 
-              return (
-                <div className={`voucher-card ${cardStatusClass}`} key={index}>
-                  <div className="card-actions">
-                    <button title="Edit" onClick={() => handleEdit(row)}>✏️</button>
-                    <button title="Delete" onClick={() => handleDelete(row)}>🗑️</button>
-                    <button title="Share" onClick={() => handleShare(row)}>📤</button>
-                    <button title="Payment" onClick={() => handlePayment(row)}>💰</button>
+                let cardStatusClass = "card-default";
+                if (pendingAmount > 0) cardStatusClass = "card-red";
+                else if (pendingAmount < 0) cardStatusClass = "card-orange";
+                else cardStatusClass = "card-green";
+
+                return (
+                  <div className={`voucher-card ${cardStatusClass}`} key={index}>
+                    <div className="card-actions">
+                      <button title="Edit" onClick={() => handleEdit(row)}>✏️</button>
+                      <button title="Delete" onClick={() => handleDelete(row)}>🗑️</button>
+                      <button title="Share" onClick={() => handleShare(row)}>📤</button>
+                      <button title="Payment" onClick={() => handlePayment(row)}>💰</button>
+                    </div>
+
+                    <h4>{row[5]}</h4>
+                    <p><strong>SNO:</strong> <span className="sno">{row[4]}</span></p>
+                    <p><strong>Product:</strong> {row[3]}</p>
+                    <p><strong>Total Goods(In KG):</strong> {row[13]} KG</p>
+                    <p><strong>Rate (Per KG):</strong> ₹{row[14]}</p>
+                    <p><strong>Total Goods Amount:</strong> ₹{totalAmount}</p>
+                    <p><strong>Total Goods Received Amount:</strong> ₹{paidAmount}</p>
+                    <p><strong>Total Goods Pending Amount:</strong> ₹{pendingAmount}</p>
+                    <p><strong>Purchase Date:</strong> {row[11]}</p>
+                    <p><strong>Vehicle:</strong> {row[8]}</p>
+                    <p><strong>Driver:</strong> {row[7]}</p>
+                    <button onClick={() => handleShowPayments(row[0], totalAmount,paidAmount,pendingAmount)}>
+                      📑 View Payments
+                    </button>
                   </div>
-
-                  <h4>{row[5]}</h4>
-                  <p><strong>SNO:</strong> <span className="sno">{row[4]}</span></p>
-                  <p><strong>Product:</strong> {row[3]}</p>
-                  <p><strong>Total Goods(In KG):</strong> {row[13]} KG</p>
-                  <p><strong>Rate (Per KG):</strong> ₹{row[14]}</p>
-                  <p><strong>Total Goods Amount:</strong> ₹{totalAmount}</p>
-                  <p><strong>Total Goods Received Amount:</strong> ₹{paidAmount}</p>
-                  <p><strong>Total Goods Pending Amount:</strong> ₹{pendingAmount}</p>
-                  <p><strong>Purchase Date:</strong> {row[11]}</p>
-                  <p><strong>Vehicle:</strong> {row[8]}</p>
-                  <p><strong>Driver:</strong> {row[7]}</p>
-                </div>
-              );
-            })}
-          </div>
-        )}
+                );
+              })}
+            </div>
+          )}
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 
