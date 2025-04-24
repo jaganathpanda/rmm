@@ -7,10 +7,12 @@ const Navbar = ({ logout }) => {
   const user = getUserInfo();
   const [menuOpen, setMenuOpen] = useState(false);
   const [salesSubmenuOpen, setSalesSubmenuOpen] = useState(false);
+  const [paddySubmenuOpen, setPaddySubmenuOpen] = useState(false); // new
 
   const handleLinkClick = () => {
     setMenuOpen(false); // Close menu after navigation
     setSalesSubmenuOpen(false); // Close submenu as well
+    setPaddySubmenuOpen(false); // Close paddy submenu too
   };
 
   return (
@@ -22,7 +24,25 @@ const Navbar = ({ logout }) => {
       <ul className={`nav-links ${menuOpen ? "active" : ""}`}>
         <li><Link to="/" onClick={handleLinkClick}>Home</Link></li>
         <li><Link to="/inventory" onClick={handleLinkClick}>Inventory</Link></li>
-        <li><Link to="/paddyPurchaseForm" onClick={handleLinkClick}>Paddy Purchase Form</Link></li>
+
+        {/* Paddy Purchase Submenu */}
+        <li className="submenu-parent">
+          <span onClick={() => setPaddySubmenuOpen(!paddySubmenuOpen)}>
+            Paddy Purchase Form ▾
+          </span>
+          <ul className={`submenu ${paddySubmenuOpen ? "show" : ""}`}>
+            <li>
+              <Link to="/paddyPurchaseForm" onClick={handleLinkClick}>
+                Paddy Purchase Form
+              </Link>
+            </li>
+            <li>
+              <Link to="/paddyPurchaseReport" onClick={handleLinkClick}>
+                Paddy Purchase Report
+              </Link>
+            </li>
+          </ul>
+        </li>
 
         {/* Sales Voucher Menu with Submenu */}
         <li className="submenu-parent">
