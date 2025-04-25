@@ -70,7 +70,7 @@ const Navbar = ({ logout }) => {
 
         <li><Link to="/customers" onClick={handleLinkClick}>Customers</Link></li>
         <li><Link to="/reports" onClick={handleLinkClick}>Reports</Link></li>
-        <li><Link to="/settings" onClick={handleLinkClick}>Settings</Link></li>
+        <li><Link to="/settings" onClick={handleLinkClick}>Configuration</Link></li>
         <li><Link to="/profile" onClick={handleLinkClick}>Profile</Link></li>
         <li>
           <button onClick={() => { logout(); handleLinkClick(); }} className="logout-btn">
