@@ -1,14 +1,21 @@
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import { getUserInfo } from "../../../utils/userSession";
 import "./ViewTransitPassForm.css";
 
-const ViewTransitPassForm = ({ mode = "add", initialData = {}, rowIndex, onDone }) => {
+const ViewTransitPassForm = ({ onDone }) => {
+  const location = useLocation();
+  const mode = location.state?.mode || "edit";
+  const transitPass = location.state?.transitPass; // ✅ Get from location state
+  const navigate = useNavigate();
   const user = getUserInfo();
-  const scriptUrl = user[10]; // Assuming user[10] is the URL, validate its existence
+  const scriptUrl = user[10];
+
   const [ppcList, setPpcList] = useState([]);
   const [formData, setFormData] = useState({
     ppc: "",
-    miller: user[4] || "", // Default to Rice Mill name, assuming user[4] is the correct index
+    miller: user[4] || "",
     transitPassNo: "",
     transitPassDate: "",
     vehicleNo: "",
@@ -18,6 +25,24 @@ const ViewTransitPassForm = ({ mode = "add", initialData = {}, rowIndex, onDone 
     delay: "",
     acceptedDate: ""
   });
+
+  // ✅ Populate form when transitPass is received via router state
+  useEffect(() => {
+    if (mode === "edit" && transitPass) {
+      setFormData({
+        ppc: transitPass.PPC || "",
+        miller: transitPass.MILLER || "",
+        transitPassNo: transitPass["Transit Pass No"] || "",
+        transitPassDate: transitPass["Transit Pass Date"]?.split("T")[0] || "",
+        vehicleNo: transitPass["Vehicle No."] || "",
+        driverName: transitPass["Driver Name"] || "",
+        bag: transitPass["Bag"] || "",
+        quantity: transitPass["Quantity (in Quintals)"] || "",
+        delay: transitPass["Delay (in Days)"] || "",
+        acceptedDate: transitPass["Accepted Date"]?.split("T")[0] || ""
+      });
+    }
+  }, [mode, transitPass]);
 
   useEffect(() => {
     const fetchPPCList = async () => {
@@ -44,26 +69,9 @@ const ViewTransitPassForm = ({ mode = "add", initialData = {}, rowIndex, onDone 
     fetchPPCList();
   }, [scriptUrl]);
 
-  useEffect(() => {
-    if (mode === "edit" && initialData) {
-      setFormData({
-        ppc: initialData[0],
-        miller: initialData[1],
-        transitPassNo: initialData[2],
-        transitPassDate: initialData[3],
-        vehicleNo: initialData[4],
-        driverName: initialData[5],
-        bag: initialData[6],
-        quantity: initialData[7],
-        delay: initialData[8],
-        acceptedDate: initialData[9]
-      });
-    }
-  }, [mode, initialData]);
-
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
       [name]: value
     }));
@@ -73,13 +81,13 @@ const ViewTransitPassForm = ({ mode = "add", initialData = {}, rowIndex, onDone 
     e.preventDefault();
     try {
       const formPayload = new FormData();
-      formPayload.append("action", mode === "edit" ? "editTransitPass" : "submitTransitPass");
+      formPayload.append("action", mode === "edit" ? "updateTransitPass" : "submitTransitPass");
 
       if (mode === "edit") {
-        formPayload.append("rowIndex", rowIndex); // For editing specific row
+        formPayload.append("transitId", transitPass["TransitId"]);
       }
 
-      Object.keys(formData).forEach(key => {
+      Object.keys(formData).forEach((key) => {
         formPayload.append(key, formData[key]);
       });
 
@@ -91,8 +99,9 @@ const ViewTransitPassForm = ({ mode = "add", initialData = {}, rowIndex, onDone 
       const result = await response.json();
       if (result.success) {
         alert(mode === "edit" ? "Transit pass updated successfully!" : "Transit pass submitted successfully!");
-        if (onDone) onDone(); // Callback after successful submission
+        if (onDone) onDone();
         if (mode === "add") {
+          // Reset form for new entry
           setFormData({
             ppc: "",
             miller: user[4] || "",
@@ -106,6 +115,7 @@ const ViewTransitPassForm = ({ mode = "add", initialData = {}, rowIndex, onDone 
             acceptedDate: ""
           });
         }
+      navigate("/viewTransitPass");
       } else {
         alert("Error: " + result.message);
       }
@@ -124,7 +134,7 @@ const ViewTransitPassForm = ({ mode = "add", initialData = {}, rowIndex, onDone 
           <select name="ppc" value={formData.ppc} onChange={handleChange} required>
             <option value="">Select PPC</option>
             {ppcList.map((ppc, index) => (
-              <option key={ppc.id || index} value={ppc}>{ppc}</option> // Ensure unique key
+              <option key={ppc.id || index} value={ppc}>{ppc}</option>
             ))}
           </select>
         </label>
