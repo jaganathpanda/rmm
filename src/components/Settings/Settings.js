@@ -1,12 +1,37 @@
-import React from "react";
+import React, { useState } from "react";
+import PPCSetting from "./PPCSetting";
+import "./Settings.css";
 
-const Home = () => {
+const Settings = () => {
+  const [selectedSetting, setSelectedSetting] = useState("PPCSetting");
+
+  const renderSettingComponent = () => {
+    switch (selectedSetting) {
+      case "PPCSetting":
+        return <PPCSetting />;
+      default:
+        return <div>Select a setting from the menu</div>;
+    }
+  };
+
   return (
-    <div style={{ padding: "20px" }}>
-      <h1>Welcome to the Rice Mill Management System</h1>
-      <p>This is the dashboard. Use the menu to navigate to different modules.</p>
+    <div className="settings-container">
+      <div className="settings-sidebar">
+        <ul>
+          <li
+            className={selectedSetting === "PPCSetting" ? "active" : ""}
+            onClick={() => setSelectedSetting("PPCSetting")}
+          >
+            PPC Setting
+          </li>
+          {/* Add more settings in the future */}
+        </ul>
+      </div>
+      <div className="settings-content">
+        {renderSettingComponent()}
+      </div>
     </div>
   );
 };
 
-export default Home;
+export default Settings;

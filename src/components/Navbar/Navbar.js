@@ -37,8 +37,8 @@ const Navbar = ({ logout }) => {
               </Link>
             </li>
             <li>
-              <Link to="/viewTransitPassForm" onClick={handleLinkClick}>
-                View Transit Pass Form
+              <Link to="/viewTransitPass" onClick={handleLinkClick}>
+                View Transit Pass Report
               </Link>
             </li>
             <li>

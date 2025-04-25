@@ -1,8 +1,7 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./SalesVoucherCardView.css";
 import { getUserInfo } from "../../../utils/userSession";
-import { formatDateDDMMYYYY } from "../../../utils/dateUtils";
 
 const productTypes = [
   { name: "PADDY", image: "paddy.jpeg" },
@@ -23,7 +22,6 @@ const SalesVoucherCardView = () => {
   const [showPopup, setShowPopup] = useState(false);
   const [selectedPayments, setSelectedPayments] = useState({ data: [], totalAmount: 0, paidAmount: 0, pendingAmount: 0 });
   const [paymentData, setPaymentData] = useState([]);
-  const paymentRefs = useRef({});
 
   useEffect(() => {
     const fetchSalesReport = async () => {

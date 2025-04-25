@@ -5,10 +5,11 @@ import Navbar from "./components/Navbar/Navbar";
 import Home from "./components/Home/Home";
 import Inventory from "./components/Inventory/Inventory";
 import PaddyPurchaseForm from "./components/PaddyPurchaseForm/PaddyPurchaseForm";
-import ViewTransitPassForm from "./components/ViewTransitPassForm/ViewTransitPassForm";
+import TransitPassList from "./components/Transit/TransitPassList/TransitPassList";
+import ViewTransitPassForm from "./components/Transit/ViewTransitPassForm/ViewTransitPassForm";
 import GoodsSalesVoucherForm from "./components/GoodsSalesVoucherForm/GoodsSalesVoucherForm";
 import Customers from "./components/Customers/Customers";
-import Reports from "./components/Reports/Reports";
+import Reports from "./components/Reports/Reports"; 
 import Settings from "./components/Settings/Settings";
 import Profile from "./components/Profile/Profile"; 
 import RegisterPage from "./components/RegisterPage/RegisterPage";
@@ -44,7 +45,9 @@ const App = () => {
             <Route path="/profile" element={<Profile />} />
             <Route path="/inventory" element={<Inventory />} />
             <Route path="/paddyPurchaseForm" element={<PaddyPurchaseForm />} />
+            <Route path="/viewTransitPass" element={<TransitPassList/>} />
             <Route path="/viewTransitPassForm" element={<ViewTransitPassForm />} />
+            <Route path="/transit-pass/edit" element={<ViewTransitPassForm mode="edit" />} />
             <Route path="/goodsSalesVoucherForm" element={<GoodsSalesVoucherForm />} />
             <Route path="/customers" element={<Customers />} />
             <Route path="/reports" element={<Reports />} />

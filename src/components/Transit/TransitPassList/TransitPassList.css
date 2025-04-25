@@ -1,0 +1,44 @@
+.transit-pass-list {
+    margin: 20px;
+    padding: 20px;
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  }
+  
+  .transit-pass-list h2 {
+    font-size: 1.5rem;
+    margin-bottom: 10px;
+  }
+  
+  .transit-pass-list input[type="text"] {
+    padding: 8px;
+    margin-bottom: 15px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+  }
+  
+  .transit-pass-list table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+  }
+  
+  .transit-pass-list th, .transit-pass-list td {
+    padding: 10px;
+    text-align: left;
+    border: 1px solid #ddd;
+  }
+  
+  .transit-pass-list button {
+    margin-right: 5px;
+    padding: 4px 8px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .transit-pass-list button:hover {
+    background: #e0e0e0;
+  }
+  
