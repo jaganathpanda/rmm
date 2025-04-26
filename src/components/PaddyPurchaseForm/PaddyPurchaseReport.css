@@ -1,138 +1,121 @@
-/* Main Container */
 .paddy-report-container {
-    margin: 20px;
-    padding: 10px;
-}
-
-/* Heading */
-h2 {
-    text-align: center;
-    margin-bottom: 20px;
-    font-size: 24px;
-}
-
-/* Table Container */
-.table-container {
-    max-width: 100%;
-    margin: 0 auto;
-    overflow-x: auto;
-    /* Make sure the table is scrollable on small screens */
-}
-
-/* Buttons */
-button {
-    margin-left: 10px;
-}
-
-/* Dialog Paper Styling */
-.MuiDialog-paper {
-    width: 80%;
-    /* Increased width for better visibility on smaller screens */
-    max-width: 800px;
-    /* Max-width for larger screens */
     padding: 20px;
-}
-
-/* Pagination Styling */
-.MuiTablePagination-root {
-    display: flex;
-    justify-content: center;
-    margin-top: 20px;
-}
-
-/* Responsive Design */
-@media (max-width: 768px) {
-    .paddy-report-container {
-        padding: 10px;
-    }
-
-    h2 {
-        font-size: 20px;
-        /* Smaller font size for mobile */
-    }
-
-    .MuiDialog-paper {
-        width: 90%;
-        /* Use more screen space on smaller screens */
-    }
-
-    .MuiTablePagination-root {
-        font-size: 12px;
-        /* Smaller font size for pagination */
-    }
-
-    /* Table responsiveness */
-    .MuiTableCell-root {
-        padding: 8px;
-    }
-
-    table {
-        width: 100%;
-    }
-
-    .MuiTableHead-root {
-        display: block;
-    }
-
-    .MuiTableBody-root {
-        display: block;
-        overflow-x: auto;
-        white-space: nowrap;
-    }
-}
-
-/* Tablet and Desktop */
-@media (max-width: 1024px) and (min-width: 768px) {
-    .paddy-report-container {
-        padding: 20px;
-    }
-
-    h2 {
-        font-size: 22px;
-    }
-
-    .MuiDialog-paper {
-        width: 80%;
-    }
-
-    .MuiTablePagination-root {
-        font-size: 14px;
-    }
-}
-
-.loader-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 300px;
-    /* Adjust based on your page */
-}
-
-.loader {
-    border: 8px solid #f3f3f3;
-    /* Light grey */
-    border-top: 8px solid #3498db;
-    /* Blue */
-    border-radius: 50%;
-    width: 50px;
-    height: 50px;
-    animation: spin 1s linear infinite;
-}
-
-/* Spinning animation */
-@keyframes spin {
-    0% {
-        transform: rotate(0deg);
-    }
-
-    100% {
-        transform: rotate(360deg);
-    }
-}
-.search-input {
+  }
+  
+  .search-input {
     padding: 8px;
     width: 300px;
     font-size: 16px;
     border-radius: 4px;
     border: 1px solid #ccc;
+    margin-bottom: 20px;
   }
+  
+  .loader-container {
+    text-align: center;
+    margin-top: 50px;
+  }
+  
+  .loader {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 6px solid #f3f3f3;
+    border-top: 6px solid #3498db;
+    border-radius: 50%;
+    width: 80px;
+    height: 80px;
+    animation: spin 1s linear infinite;
+    font-size: 12px;
+    color: #3498db;
+    text-align: center;
+    position: relative;
+  }
+  .loader::after {
+    content: "Loading...";
+    position: absolute;
+    font-size: 12px;
+    color: #3498db;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+  
+  @keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
+  
+  .paddy-card-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center;
+  }
+  
+  .paddy-card {
+    background: #f9f9f9;
+    border: 1px solid #ddd;
+    padding: 20px;
+    width: 300px;
+    min-height: 280px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    transition: 0.3s;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+  
+  .paddy-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+  }
+  
+  .card-actions {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    display: flex;
+    gap: 5px;
+  }
+  
+  .card-actions button {
+    min-width: 0;
+    padding: 4px 8px;
+    font-size: 12px;
+  }
+  
+  /* ------------------- */
+  /* 🌟 Responsive Design */
+  /* ------------------- */
+  
+  /* Tablet screens */
+  @media (max-width: 768px) {
+    .paddy-card-list {
+      gap: 15px;
+    }
+  
+    .paddy-card {
+      width: 45%; /* Two cards per row on tablet */
+    }
+  }
+  
+  /* Mobile screens */
+  @media (max-width: 480px) {
+    .paddy-card-list {
+      flex-direction: column;
+      align-items: center;
+    }
+  
+    .paddy-card {
+      width: 90%; /* Full width card on mobile */
+    }
+  
+    .search-input {
+      width: 90%;
+      font-size: 14px;
+    }
+  }
+  

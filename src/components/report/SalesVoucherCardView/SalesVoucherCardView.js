@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./SalesVoucherCardView.css";
 import { getUserInfo } from "../../../utils/userSession";
+import Spinner from '../../Spinner/Spinner'
 
 const productTypes = [
   { name: "PADDY", image: "paddy.jpeg" },
@@ -260,7 +261,7 @@ const SalesVoucherCardView = () => {
           />
 
           {loading ? (
-            <div className="loader">Loading...</div>
+             <Spinner size={100} color="#e74c3c" text="Please wait..." />
           ) : (
             <div className="voucher-list">
               {filteredData.map((row, index) => {
