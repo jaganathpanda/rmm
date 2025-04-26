@@ -2,28 +2,53 @@ import React, { useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import "./GoodsPaymentForm.css";
 import { getUserInfo } from "../../utils/userSession";
+import Spinner from '../Spinner/Spinner'
 import DateInput from "../../utils/DateInput";
 
 const GoodsPaymentForm = () => {
     const user = getUserInfo();
     const scriptUrl = user[10]; // Apps Script endpoint
+    const [loading, setLoading] = useState(false);
     const location = useLocation();
     const rawData = location.state.row || {};
+    const source = location.state.source || "";
+    const actionName = source === "paddy" ? "payAmountAgainstPaddy" : "receiveAmountAgainstGoods";
     const navigate = useNavigate();
 
     const [paymentAmount, setPaymentAmount] = useState("");
     const [paymentType, setPaymentType] = useState("");
     const [paymentDate, setPaymentDate] = useState("");
     const [remark, setRemark] = useState("");
-
-    const totalAmount = Number(rawData[16] || 0);
-    const totalPaid = Number(rawData[20] || 0);
-    const vendorMobile = rawData[10];
-    const vendorEmail = rawData[9];
-    const vendorAddress = rawData[6];
-    const vendorName = rawData[5];
-    const serialNo = rawData[4];
-    const typeOfGoods = rawData[3];
+    let totalAmount = Number(rawData[16] || 0);
+    let totalPaid = Number(rawData[20] || 0);
+    let vendorMobile = rawData[10];
+    let vendorEmail = rawData[9];
+    let vendorAddress = rawData[6];
+    let vendorName = rawData[5];
+    let serialNo = rawData[4];
+    let typeOfGoods = rawData[3];
+    let voucherOrPaddyId = "";
+    if (source === "goods") {
+        totalAmount = Number(rawData[16] || 0);
+        totalPaid = Number(rawData[20] || 0);
+        vendorMobile = rawData[10];
+        vendorEmail = rawData[9];
+        vendorAddress = rawData[6];
+        vendorName = rawData[5];
+        serialNo = rawData[4];
+        typeOfGoods = rawData[3];
+        voucherOrPaddyId = "saleVoucherId";
+    } else {
+        totalAmount = Number(rawData[13] || 0);
+        totalPaid = Number(rawData[17] || 0);
+        vendorMobile = rawData[7];
+        vendorEmail = rawData[6];
+        vendorAddress = rawData[5];
+        vendorName = rawData[4];
+        serialNo = rawData[3];
+        typeOfGoods = rawData[15];
+        voucherOrPaddyId = "paddyRecordId";
+    }
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -52,11 +77,12 @@ const GoodsPaymentForm = () => {
                         description: "Payment for Goods",
                         handler: async function (response) {
                             try {
+                                setLoading(true);
                                 const saveRes = await fetch(scriptUrl, {
                                     method: "POST",
                                     body: new URLSearchParams({
-                                        action: "receiveAmountAgainstGoods",
-                                        saleVoucherId: rawData[0],
+                                        action: actionName,
+                                        [voucherOrPaddyId]: rawData[0],
                                         rmmUserId: rawData[2],
                                         paidAmount: paymentAmount,
                                         paymentType: "UPI",
@@ -71,8 +97,13 @@ const GoodsPaymentForm = () => {
                                 const saveResult = await saveRes.json();
 
                                 if (saveResult.status === "Success") {
+                                    setLoading(true);
                                     alert("UPI Payment successful and saved.");
-                                    navigate("/SalesVoucherCardView");
+                                    if (source === "paddy") {
+                                        navigate("/PaddyPurchaseReport");
+                                    } else if (source === "goods") {
+                                        navigate("/SalesVoucherCardView");
+                                    }
                                 } else {
                                     alert("Payment done, but failed to save details: " + saveResult.message);
                                 }
@@ -87,7 +118,7 @@ const GoodsPaymentForm = () => {
                             contact: vendorMobile,
                         },
                         notes: {
-                            address:vendorAddress,
+                            address: vendorAddress,
                         },
                         theme: {
                             color: "#3399cc"
@@ -136,53 +167,59 @@ const GoodsPaymentForm = () => {
 
     return (
         <div className="payment-form">
-            <h2>GOODS PAYMENT</h2>
-            <p><strong>TYPE OF GOODS:</strong> {typeOfGoods}</p>
-            <p><strong>VENDOR NAME:</strong> {vendorName}</p>
-            <p><strong>VENDOR MOBILE:</strong> {vendorMobile}</p>
-            <p><strong>TOTAL GOODS AMOUNT:</strong> ₹{totalAmount}</p>
-            <p><strong>TOTAL AMOUNT PAID:</strong> ₹{totalPaid}</p>
-            <p><strong>TOTAL PENDING AMOUNT:</strong> ₹{totalAmount - totalPaid}</p>
-            <p><strong>GOODS SERIAL NO:</strong> {serialNo}</p>
+            <h2>{source === "paddy" ? "PADDY PAYMENT" : "GOODS PAYMENT"}</h2>
+            {loading ? (
+                <Spinner size={100} color="#e74c3c" text="Please wait..." />
+            ) : (
+                <>
+                    <p><strong>TYPE OF GOODS:</strong> {typeOfGoods}</p>
+                    <p><strong>VENDOR NAME:</strong> {vendorName}</p>
+                    <p><strong>VENDOR MOBILE:</strong> {vendorMobile}</p>
+                    <p><strong>TOTAL GOODS AMOUNT:</strong> ₹{totalAmount}</p>
+                    <p><strong>TOTAL AMOUNT PAID:</strong> ₹{totalPaid}</p>
+                    <p><strong>TOTAL PENDING AMOUNT:</strong> ₹{totalAmount - totalPaid}</p>
+                    <p><strong>GOODS SERIAL NO:</strong> {serialNo}</p>
 
-            <form onSubmit={handleSubmit}>
-                <label>PAYMENT AMOUNT</label>
-                <input
-                    type="number"
-                    value={paymentAmount}
-                    onChange={(e) => setPaymentAmount(e.target.value)}
-                    required
-                />
+                    <form onSubmit={handleSubmit}>
+                        <label>PAYMENT AMOUNT</label>
+                        <input
+                            type="number"
+                            value={paymentAmount}
+                            onChange={(e) => setPaymentAmount(e.target.value)}
+                            required
+                        />
 
-                <label>PAYMENT TYPE</label>
-                <select
-                    value={paymentType}
-                    onChange={(e) => setPaymentType(e.target.value)}
-                    required
-                >
-                    <option value="">Select Payment Type</option>
-                    <option value="CASH">Cash</option>
-                    <option value="BANK">Bank</option>
-                    <option value="UPI">UPI (Razorpay)</option>
-                    <option value="ONLINE">Online</option>
-                </select>
+                        <label>PAYMENT TYPE</label>
+                        <select
+                            value={paymentType}
+                            onChange={(e) => setPaymentType(e.target.value)}
+                            required
+                        >
+                            <option value="">Select Payment Type</option>
+                            <option value="CASH">Cash</option>
+                            <option value="BANK">Bank</option>
+                            <option value="UPI">UPI (Razorpay)</option>
+                            <option value="ONLINE">Online</option>
+                        </select>
 
-                <DateInput
-                    label="PAYMENT DATE"
-                    name="paymentDate"
-                    value={paymentDate}
-                    onChange={(e) => setPaymentDate(e.target.value)}
-                />
+                        <DateInput
+                            label="PAYMENT DATE"
+                            name="paymentDate"
+                            value={paymentDate}
+                            onChange={(e) => setPaymentDate(e.target.value)}
+                        />
 
-                <label>ANY REMARK</label>
-                <input
-                    type="text"
-                    value={remark}
-                    onChange={(e) => setRemark(e.target.value)}
-                />
+                        <label>ANY REMARK</label>
+                        <input
+                            type="text"
+                            value={remark}
+                            onChange={(e) => setRemark(e.target.value)}
+                        />
 
-                <button type="submit">SAVE</button>
-            </form>
+                        <button type="submit">SAVE</button>
+                    </form>
+                </>
+            )}
         </div>
     );
 };

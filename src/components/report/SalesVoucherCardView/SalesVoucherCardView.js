@@ -186,7 +186,7 @@ const SalesVoucherCardView = () => {
   };
 
   const handlePayment = (row) => {
-    navigate("/goodsPaymentForm", { state: { row } });
+    navigate("/goodsPaymentForm", { state: { row ,source: "goods"} });
   };
 
   return (

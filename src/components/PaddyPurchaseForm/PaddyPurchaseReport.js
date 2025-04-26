@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { Button, Dialog, DialogActions, DialogTitle, DialogContent, TablePagination } from "@mui/material";
 import { getUserInfo } from "../../utils/userSession";
-import PaddyPurchaseForm from "./PaddyPurchaseForm"; 
+import PaddyPurchaseForm from "./PaddyPurchaseForm";
 import Spinner from '../Spinner/Spinner'
+import { useNavigate } from "react-router-dom"
 import "./PaddyPurchaseReport.css"; // Import the CSS
 
 const mapRowToFormData = (row) => ({
@@ -29,7 +30,7 @@ const PaddyPurchaseReport = () => {
     const [selectedRow, setSelectedRow] = useState(null);
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(12);
-
+    const navigate = useNavigate();
     const formPayload = new FormData();
     formPayload.append("action", "paddyPurchaseReport");
 
@@ -43,7 +44,7 @@ const PaddyPurchaseReport = () => {
                 });
                 const result = await response.json();
                 if (result.status === "Success") {
-                    const cleanedData = result.message.slice(1);
+                    const cleanedData = result.message[0].slice(1);
                     setPaddyData(cleanedData);
                 } else {
                     console.error("Error fetching data:", result.message);
@@ -70,28 +71,32 @@ const PaddyPurchaseReport = () => {
         setSelectedRow(mappedData);
         setOpenEditDialog(true);
     };
+    const handlePayment = (row) => {
+        navigate("/paddyPaymentForm", { state: { row, source: "paddy" } });
+    };
 
-    const handleDelete = async (serialNo) => {
+    const handleDelete = async (rmmPaddyRecordId) => {
+        setLoading(true);
         const confirmDelete = window.confirm("Are you sure you want to delete this record?");
+        const formDeletePayload = new FormData();
+        formDeletePayload.append("action", "paddyPurchaseRecordDelete");
+        formDeletePayload.append("paddyRecordId", rmmPaddyRecordId);
         if (confirmDelete) {
             try {
                 const response = await fetch(user[10], {
                     method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({
-                        action: "paddyPurchaseRecordDelete",
-                        userId: user[0],
-                        serialNo,
-                    }),
+                    body: formDeletePayload
                 });
                 const result = await response.json();
-                if (result.success) {
-                    setPaddyData((prevData) => prevData.filter((item) => item[3] !== serialNo));
+                if (result.status = "Success") {
+                    setPaddyData((prevData) => prevData.filter((item) => item[0] !== rmmPaddyRecordId));
                 } else {
                     console.error("Error deleting data:", result.message);
                 }
             } catch (error) {
                 console.error("Error:", error);
+            } finally {
+                setLoading(false);
             }
         }
     };
@@ -115,7 +120,7 @@ const PaddyPurchaseReport = () => {
             </div>
 
             {loading ? (
-               <Spinner size={100} color="#e74c3c" text="Please wait..." />
+                <Spinner size={100} color="#e74c3c" text="Please wait..." />
             ) : (
                 <>
                     <div className="paddy-card-list">
@@ -125,8 +130,11 @@ const PaddyPurchaseReport = () => {
                                     <Button onClick={() => handleEdit(row)} variant="outlined" color="primary" size="small">
                                         ✏️ Edit
                                     </Button>
-                                    <Button onClick={() => handleDelete(row[3])} variant="outlined" color="secondary" size="small">
+                                    <Button onClick={() => handleDelete(row[0])} variant="outlined" color="secondary" size="small">
                                         🗑️ Delete
+                                    </Button>
+                                    <Button onClick={() => handlePayment(row)} variant="outlined" color="success" size="small">
+                                        💰 Payment
                                     </Button>
                                 </div>
 
