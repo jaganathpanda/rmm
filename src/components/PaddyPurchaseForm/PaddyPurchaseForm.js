@@ -2,10 +2,11 @@ import React, { useState } from "react";
 import "../../utils/Form.css";
 import { getUserInfo } from "../../utils/userSession";
 
-
-const PaddyPurchaseForm = () => {
+const PaddyPurchaseForm = ({ initialData = {}, onClose }) => {
+   const editOrAdd = initialData?.rmmPaddyRecordId ? "UPDATE" : "SAVE"
   const user = getUserInfo();
   const [formData, setFormData] = useState({
+    rmmPaddyRecordId:"",
     serialNo: "",
     farmerName: "",
     rememberFarmer: false,
@@ -17,6 +18,7 @@ const PaddyPurchaseForm = () => {
     perBagPrice: "",
     paddyType: "",
     collectionCenter: "",
+    ...initialData,
   });
 
   const [paddyReceipt, setPaddyReceipt] = useState(null);
@@ -36,17 +38,15 @@ const PaddyPurchaseForm = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    // Basic validation
     if (!formData.paddyType || !formData.collectionCenter) {
       alert("Please select all required dropdowns.");
       return;
     }
 
     const formPayload = new FormData();
-
-    formPayload.append("action", "paddyPurchaseAction");
-    formPayload.append("rmmUserId", user[0]); // Replace with actual user ID logic
+    formPayload.append("action", initialData?.rmmPaddyRecordId ? "paddyPurchaseUpdateAction" : "paddyPurchaseAction");
+    formPayload.append("rmmUserId", user[0]);
+    if (initialData?.rmmPaddyRecordId) formPayload.append("rmmPaddyRecordId", initialData.rmmPaddyRecordId);
     formPayload.append("serialNo", formData.serialNo);
     formPayload.append("farmerName", formData.farmerName);
     formPayload.append("rememberFarmerName", formData.rememberFarmer ? "TRUE" : "FALSE");
@@ -58,37 +58,18 @@ const PaddyPurchaseForm = () => {
     formPayload.append("farmerMobile", formData.mobile);
     formPayload.append("typeOfPaddy", formData.paddyType);
     formPayload.append("paddyCollectFrom", formData.collectionCenter);
-    formPayload.append("anyRemarks", ""); // Optional remarks if needed
+    formPayload.append("anyRemarks", "");
 
-    if (paddyReceipt) {
-      formPayload.append("receiptImage", paddyReceipt);
-    }
+    if (paddyReceipt) formPayload.append("receiptImage", paddyReceipt);
 
     try {
       const response = await fetch(user[10], {
         method: "POST",
         body: formPayload,
       });
-
       const result = await response.json();
-      console.log("Server Response:", result);
-      alert(result.message || "Paddy entry submitted!");
-
-      // Reset form
-      setFormData({
-        serialNo: "",
-        farmerName: "",
-        rememberFarmer: false,
-        address: "",
-        email: "",
-        mobile: "",
-        purchaseDate: "",
-        totalPaddy: "",
-        perBagPrice: "",
-        paddyType: "",
-        collectionCenter: "",
-      });
-      setPaddyReceipt(null);
+      alert(result.message || "Paddy entry saved!");
+      if (onClose) onClose();
     } catch (error) {
       console.error("Error submitting form:", error);
       alert("Failed to submit paddy entry.");
@@ -99,7 +80,7 @@ const PaddyPurchaseForm = () => {
     <div className="purchase-form-container">
       <h2 className="form-title">PADDY PURCHASE FORM</h2>
       <form onSubmit={handleSubmit} className="purchase-form">
-        <label>COLLECTION CENTER</label>
+      <label>COLLECTION CENTER</label>
         <select
           name="collectionCenter"
           value={formData.collectionCenter}
@@ -107,9 +88,9 @@ const PaddyPurchaseForm = () => {
           required
         >
           <option value="">Select Collection Center</option>
-          <option value="Local">Farmer/Local Business Vendor</option>
-          <option value="Mandi">Mandi</option>
-          <option value="Own">Own</option>
+          <option value="LOCAL">Farmer/Local Business Vendor</option>
+          <option value="MANDI">Mandi</option>
+          <option value="OWN">Own</option>
         </select>
         <label>SERIAL NO.</label>
         <input
@@ -212,8 +193,7 @@ const PaddyPurchaseForm = () => {
         {paddyReceipt && (
           <p className="file-info">Selected: {paddyReceipt.name}</p>
         )}
-
-        <button type="submit">SAVE</button>
+        <button type="submit">{editOrAdd}</button>
       </form>
     </div>
   );

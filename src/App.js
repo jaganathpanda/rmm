@@ -5,6 +5,7 @@ import Navbar from "./components/Navbar/Navbar";
 import Home from "./components/Home/Home";
 import Inventory from "./components/Inventory/Inventory";
 import PaddyPurchaseForm from "./components/PaddyPurchaseForm/PaddyPurchaseForm";
+import PaddyPurchaseReport from "./components/PaddyPurchaseForm/PaddyPurchaseReport";
 import TransitPassList from "./components/Transit/TransitPassList/TransitPassList";
 import ViewTransitPassForm from "./components/Transit/ViewTransitPassForm/ViewTransitPassForm";
 import GoodsSalesVoucherForm from "./components/GoodsSalesVoucherForm/GoodsSalesVoucherForm";
@@ -45,6 +46,7 @@ const App = () => {
             <Route path="/profile" element={<Profile />} />
             <Route path="/inventory" element={<Inventory />} />
             <Route path="/paddyPurchaseForm" element={<PaddyPurchaseForm />} />
+            <Route path="/paddyPurchaseReport" element={<PaddyPurchaseReport />} />
             <Route path="/viewTransitPass" element={<TransitPassList/>} />
             <Route path="/viewTransitPassForm" element={<ViewTransitPassForm />} />
             <Route path="/transit-pass/edit" element={<ViewTransitPassForm mode="edit" />} />
