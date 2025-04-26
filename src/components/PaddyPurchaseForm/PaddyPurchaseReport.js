@@ -22,6 +22,7 @@ const mapRowToFormData = (row) => ({
 
 const PaddyPurchaseReport = () => {
     // const [user, setUser] = useState(null);
+    const [filterText, setFilterText] = useState('');
     const [loading, setLoading] = useState(false);
     const user = getUserInfo();
     const [paddyData, setPaddyData] = useState([]);  // Data for the report
@@ -48,7 +49,7 @@ const PaddyPurchaseReport = () => {
                 } else {
                     console.error("Error fetching data:", result.message);
                 }
-                setLoading(false); 
+                setLoading(false);
             } catch (error) {
                 console.error("Error:", error);
             }
@@ -101,10 +102,21 @@ const PaddyPurchaseReport = () => {
             }
         }
     };
-
+    const filteredData = paddyData.filter((row) =>
+        row[4]?.toLowerCase().includes(filterText.toLowerCase())
+    );
     return (
         <div className="paddy-report-container">
             <h2>Paddy Purchase Report</h2>
+            <div style={{ textAlign: 'center', marginBottom: '20px' }}>
+                <input
+                    type="text"
+                    placeholder="Search by Farmer Name"
+                    value={filterText}
+                    onChange={(e) => setFilterText(e.target.value)}
+                     className="search-input"
+                />
+            </div>
             {loading ? (
                 <div className="loader-container">
                     <div className="loader"></div>  {/* loader symbol here */}
@@ -124,7 +136,7 @@ const PaddyPurchaseReport = () => {
                                 </TableRow>
                             </TableHead>
                             <TableBody>
-                                {paddyData.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => (
+                                {filteredData.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => (
                                     <TableRow key={row[0]}>
                                         <TableCell>{row[3]}</TableCell>
                                         <TableCell>{row[4]}</TableCell>
