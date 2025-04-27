@@ -40,7 +40,7 @@ const GoodsPaymentForm = () => {
         voucherOrPaddyId = "saleVoucherId";
     } else {
         totalAmount = Number(rawData[13] || 0);
-        totalPaid = Number(rawData[17] || 0);
+        totalPaid = Number(rawData[19] || 0);
         vendorMobile = rawData[7];
         vendorEmail = rawData[6];
         vendorAddress = rawData[5];
