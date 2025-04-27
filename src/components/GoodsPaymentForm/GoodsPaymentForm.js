@@ -183,7 +183,7 @@ const GoodsPaymentForm = () => {
                     <p><strong>TOTAL GOODS AMOUNT:</strong> ₹{totalAmount}</p>
                     <p><strong>TOTAL AMOUNT PAID:</strong> ₹{totalPaid}</p>
                     <p><strong>TOTAL PENDING AMOUNT:</strong> ₹{totalAmount - totalPaid}</p>
-                    <p><strong>GOODS SERIAL NO:</strong> {serialNo}</p>
+                    <p><strong>{source === "paddy" ? "PADDY SERIAL NO:" : "GOODS SERIAL NO:"}</strong> {serialNo}</p>
 
                     <form onSubmit={handleSubmit}>
                         <label>PAYMENT AMOUNT</label>
