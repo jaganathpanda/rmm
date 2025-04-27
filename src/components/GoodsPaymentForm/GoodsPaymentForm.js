@@ -140,8 +140,8 @@ const GoodsPaymentForm = () => {
                 const res = await fetch(scriptUrl, {
                     method: "POST",
                     body: new URLSearchParams({
-                        action: "receiveAmountAgainstGoods",
-                        saleVoucherId: rawData[0],
+                        action: actionName,
+                        [voucherOrPaddyId]: rawData[0],
                         rmmUserId: rawData[2],
                         paidAmount: paymentAmount,
                         paymentType,
@@ -154,7 +154,12 @@ const GoodsPaymentForm = () => {
 
                 if (result.status === "Success") {
                     alert("Payment successfully entered.");
-                    navigate("/SalesVoucherCardView");
+                    if (source === "paddy") {
+                        navigate("/PaddyPurchaseReport");
+                    } else if (source === "goods") {
+                        navigate("/SalesVoucherCardView");
+                    }
+
                 } else {
                     alert("Error: " + result.message);
                 }
