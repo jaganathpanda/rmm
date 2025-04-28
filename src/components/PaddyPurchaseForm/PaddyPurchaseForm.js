@@ -15,6 +15,7 @@ const PaddyPurchaseForm = ({ initialData = {}, onClose }) => {
     mobile: "",
     purchaseDate: "",
     totalPaddy: "",
+    receiptImage: "",
     perBagPrice: "",
     paddyType: "",
     collectionCenter: "",
@@ -22,10 +23,19 @@ const PaddyPurchaseForm = ({ initialData = {}, onClose }) => {
   });
 
   const [paddyReceipt, setPaddyReceipt] = useState(null);
+  const [previewUrl, setPreviewUrl] = useState(initialData.receiptImage || null);
+  const [isPopupOpen, setIsPopupOpen] = useState(false);
 
   const handleFileChange = (e) => {
     const file = e.target.files[0];
-    if (file) setPaddyReceipt(file);
+    if (file) {
+      setPaddyReceipt(file);
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setPreviewUrl(reader.result); // base64 string
+      };
+      reader.readAsDataURL(file);
+    }
   };
 
   const handleChange = (e) => {
@@ -213,11 +223,27 @@ const PaddyPurchaseForm = ({ initialData = {}, onClose }) => {
           accept="image/*,application/pdf"
           onChange={handleFileChange}
         />
-        {paddyReceipt && (
-          <p className="file-info">Selected: {paddyReceipt.name}</p>
+        {previewUrl && (
+          <div className="image-preview">
+            <img
+              src={previewUrl}
+              alt="Receipt Preview"
+              className="thumbnail-image"
+              onClick={() => setIsPopupOpen(true)}
+            />
+          </div>
         )}
         <button type="submit">{editOrAdd}</button>
       </form>
+      {isPopupOpen && (
+        <div className="popup-overlay" onClick={() => setIsPopupOpen(false)}>
+          <img
+            src={previewUrl}
+            alt="Full Receipt"
+            className="popup-image"
+          />
+        </div>
+      )}
     </div>
   );
 };

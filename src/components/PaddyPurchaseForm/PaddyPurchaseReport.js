@@ -17,6 +17,7 @@ const mapRowToFormData = (row) => ({
     totalPaddy: row[10] || "",
     perBagPrice: row[11] || "",
     paddyType: row[15] || "",
+    receiptImage: row[14] || "",
     collectionCenter: row[16] || "",
     rememberFarmer: row[18] || false,
 });
