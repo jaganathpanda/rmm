@@ -224,7 +224,7 @@ const PaddyPurchaseForm = ({ initialData = {}, onClose }) => {
           accept="image/*,application/pdf"
           onChange={handleFileChange}
         />
-       <ImagePreviewPopup imageUrl={previewUrl} altText="Receipt Preview" />
+       <ImagePreviewPopup url={previewUrl} />
         <button type="submit">{editOrAdd}</button>
       </form>
     </div>
