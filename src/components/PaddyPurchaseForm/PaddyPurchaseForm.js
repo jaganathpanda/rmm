@@ -3,10 +3,10 @@ import "../../utils/Form.css";
 import { getUserInfo } from "../../utils/userSession";
 
 const PaddyPurchaseForm = ({ initialData = {}, onClose }) => {
-   const editOrAdd = initialData?.rmmPaddyRecordId ? "UPDATE" : "SAVE"
+  const editOrAdd = initialData?.rmmPaddyRecordId ? "UPDATE" : "SAVE"
   const user = getUserInfo();
   const [formData, setFormData] = useState({
-    rmmPaddyRecordId:"",
+    rmmPaddyRecordId: "",
     serialNo: "",
     farmerName: "",
     rememberFarmer: false,
@@ -60,19 +60,42 @@ const PaddyPurchaseForm = ({ initialData = {}, onClose }) => {
     formPayload.append("paddyCollectFrom", formData.collectionCenter);
     formPayload.append("anyRemarks", "");
 
-    if (paddyReceipt) formPayload.append("receiptImage", paddyReceipt);
+    if (paddyReceipt) {
+      const reader = new FileReader();
+      reader.onloadend = async () => {
+        const base64String = reader.result.split(",")[1]; // remove 'data:image/jpeg;base64,...'
+        formPayload.append("receiptImage", base64String);
 
-    try {
-      const response = await fetch(user[10], {
-        method: "POST",
-        body: formPayload,
-      });
-      const result = await response.json();
-      alert(result.message || "Paddy entry saved!");
-      if (onClose) onClose();
-    } catch (error) {
-      console.error("Error submitting form:", error);
-      alert("Failed to submit paddy entry.");
+        // 🚀 Now after base64 is ready, submit the form
+        try {
+          const response = await fetch(user[10], {
+            method: "POST",
+            body: formPayload,
+          });
+          const result = await response.json();
+          alert(result.message || "Paddy entry saved!");
+          if (onClose) onClose();
+        } catch (error) {
+          console.error("Error submitting form:", error);
+          alert("Failed to submit paddy entry.");
+        }
+      };
+
+      reader.readAsDataURL(paddyReceipt);
+    } else {
+      // No image, just submit directly
+      try {
+        const response = await fetch(user[10], {
+          method: "POST",
+          body: formPayload,
+        });
+        const result = await response.json();
+        alert(result.message || "Paddy entry saved!");
+        if (onClose) onClose();
+      } catch (error) {
+        console.error("Error submitting form:", error);
+        alert("Failed to submit paddy entry.");
+      }
     }
   };
 
@@ -80,7 +103,7 @@ const PaddyPurchaseForm = ({ initialData = {}, onClose }) => {
     <div className="purchase-form-container">
       <h2 className="form-title">PADDY PURCHASE FORM</h2>
       <form onSubmit={handleSubmit} className="purchase-form">
-      <label>COLLECTION CENTER</label>
+        <label>COLLECTION CENTER</label>
         <select
           name="collectionCenter"
           value={formData.collectionCenter}
