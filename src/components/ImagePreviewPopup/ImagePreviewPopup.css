@@ -1,0 +1,30 @@
+.image-preview {
+    margin-top: 10px;
+  }
+  
+  .thumbnail-image {
+    width: 150px;
+    height: auto;
+    border-radius: 8px;
+    cursor: pointer;
+  }
+  
+  .popup-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+  }
+  
+  .popup-image {
+    max-width: 90%;
+    max-height: 90%;
+    border-radius: 8px;
+  }
+  

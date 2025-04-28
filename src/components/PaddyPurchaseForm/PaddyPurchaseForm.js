@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import "../../utils/Form.css";
+import ImagePreviewPopup from "../ImagePreviewPopup/ImagePreviewPopup";
 import { getUserInfo } from "../../utils/userSession";
 
 const PaddyPurchaseForm = ({ initialData = {}, onClose }) => {
@@ -223,27 +224,9 @@ const PaddyPurchaseForm = ({ initialData = {}, onClose }) => {
           accept="image/*,application/pdf"
           onChange={handleFileChange}
         />
-        {previewUrl && (
-          <div className="image-preview">
-            <img
-              src={previewUrl}
-              alt="Receipt Preview"
-              className="thumbnail-image"
-              onClick={() => setIsPopupOpen(true)}
-            />
-          </div>
-        )}
+       <ImagePreviewPopup imageUrl={previewUrl} altText="Receipt Preview" />
         <button type="submit">{editOrAdd}</button>
       </form>
-      {isPopupOpen && (
-        <div className="popup-overlay" onClick={() => setIsPopupOpen(false)}>
-          <img
-            src={previewUrl}
-            alt="Full Receipt"
-            className="popup-image"
-          />
-        </div>
-      )}
     </div>
   );
 };
