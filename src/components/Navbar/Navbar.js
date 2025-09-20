@@ -68,6 +68,7 @@ const Navbar = ({ logout }) => {
           </ul>
         </li>
 
+        <li><Link to="/attendanceForm" onClick={handleLinkClick}>Staff</Link></li>
         <li><Link to="/customers" onClick={handleLinkClick}>Customers</Link></li>
         <li><Link to="/reports" onClick={handleLinkClick}>Reports</Link></li>
         <li><Link to="/settings" onClick={handleLinkClick}>Configuration</Link></li>

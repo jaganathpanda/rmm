@@ -1,0 +1,207 @@
+.warehouse-setting {
+  max-width: 800px;
+  margin: 30px auto;
+  padding: 20px;
+  background-color: #fefefe;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.warehouse-setting h2 {
+  text-align: center;
+  margin-bottom: 20px;
+  color: #333;
+}
+
+/* --- Form Styles --- */
+.warehouse-form {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.warehouse-form input {
+  flex: 1;
+  min-width: 180px;
+  padding: 8px 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.warehouse-form button {
+  padding: 8px 14px;
+  background-color: #0077cc;
+  border: none;
+  color: white;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.warehouse-form button:hover {
+  background-color: #005fa3;
+}
+
+/* --- Warehouse List --- */
+.warehouse-list h4 {
+  margin-bottom: 10px;
+  color: #444;
+}
+
+.warehouse-list ul {
+  list-style: none;
+  padding-left: 0;
+}
+
+.warehouse-list li {
+  background: #f4f4f4;
+  margin-bottom: 10px;
+  padding: 12px;
+  border-radius: 6px;
+}
+
+/* Display warehouse info */
+.warehouse-info {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 12px;
+  align-items: center;
+}
+
+.warehouse-info span {
+  flex: 1 1 200px;
+}
+
+.warehouse-info .actions {
+  display: flex;
+  gap: 6px;
+}
+
+/* Edit Mode */
+.edit-mode {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.edit-mode input {
+  flex: 1 1 200px;
+  padding: 6px 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.edit-mode button {
+  padding: 6px 10px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.edit-mode button:first-of-type {
+  background-color: #28a745;
+  color: white;
+}
+
+.edit-mode button:last-of-type {
+  background-color: #dc3545;
+  color: white;
+}
+
+.edit-mode button:first-of-type:hover {
+  background-color: #218838;
+}
+
+.edit-mode button:last-of-type:hover {
+  background-color: #c82333;
+}
+
+/* Action Buttons */
+.warehouse-info .actions button {
+  padding: 6px 10px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.warehouse-info .actions button:first-of-type {
+  background-color: #ffc107;
+  color: black;
+}
+
+.warehouse-info .actions button:last-of-type {
+  background-color: #dc3545;
+  color: white;
+}
+
+.warehouse-info .actions button:first-of-type:hover {
+  background-color: #e0a800;
+}
+
+.warehouse-info .actions button:last-of-type:hover {
+  background-color: #c82333;
+}
+
+/* --- Responsive Breakpoints --- */
+@media (max-width: 768px) {
+  .warehouse-setting {
+    padding: 15px;
+  }
+
+  .warehouse-form {
+    flex-direction: column;
+  }
+
+  .warehouse-form input,
+  .warehouse-form button {
+    width: 100%;
+  }
+
+  .warehouse-info {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .warehouse-info span {
+    width: 100%;
+  }
+
+  .warehouse-info .actions {
+    width: 100%;
+    justify-content: flex-start;
+    margin-top: 8px;
+  }
+
+  .edit-mode {
+    flex-direction: column;
+  }
+
+  .edit-mode input,
+  .edit-mode button {
+    width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .warehouse-setting {
+    margin: 15px;
+    padding: 12px;
+  }
+
+  .warehouse-setting h2 {
+    font-size: 1.2rem;
+  }
+
+  .warehouse-form input,
+  .edit-mode input {
+    font-size: 0.9rem;
+  }
+
+  .warehouse-form button,
+  .edit-mode button,
+  .warehouse-info .actions button {
+    font-size: 0.9rem;
+  }
+}

@@ -19,6 +19,8 @@ import ForgotPassword from "./components/ForgotPassword/ForgotPassword";
 import UpdatePassword from "./components/UpdatePassword/UpdatePassword";
 import SalesVoucherCardView from "./components/report/SalesVoucherCardView/SalesVoucherCardView"; 
 import GoodsPaymentForm from "./components/GoodsPaymentForm/GoodsPaymentForm"; 
+import AttendanceForm from "./components/AttendanceForm/AttendanceForm";
+import LandingPage from "./components/LandingPage/LandingPage";
 
 const App = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -52,6 +54,7 @@ const App = () => {
             <Route path="/transit-pass/edit" element={<ViewTransitPassForm mode="edit" />} />
             <Route path="/goodsSalesVoucherForm" element={<GoodsSalesVoucherForm />} />
             <Route path="/customers" element={<Customers />} />
+            <Route path="/attendanceForm" element={< AttendanceForm />} />
             <Route path="/reports" element={<Reports />} />
             <Route path="/settings" element={<Settings />} />
             <Route path="/goodsPaymentForm" element={<GoodsPaymentForm />} />
@@ -62,25 +65,19 @@ const App = () => {
         </>
       ) : (
         <Routes>
-          <Route
-            path="/"
-            element={
-              <LoginPage
-                setUserLoggedIn={(val) => {
-                  if (val) {
-                    sessionStorage.setItem("isLoggedIn", "true");
-                    setIsLoggedIn(true);
-                  }
-                }}
-              />
-            }
-          />
-          <Route path="/register" element={<RegisterPage />} />
-          <Route path="*" element={<Navigate to="/" />} />
-          <Route path="/otp-verification" element={<OTPVerification />} />
-          <Route path="/forgot-password" element={<ForgotPassword />} />  
-          <Route path="/update-password" element={<UpdatePassword />} />  
-        </Routes>
+        <Route path="/" element={<LandingPage />} />
+        <Route path="/login" element={<LoginPage setUserLoggedIn={(val) => {
+          if (val) {
+            sessionStorage.setItem("isLoggedIn", "true");
+            setIsLoggedIn(true);
+          }
+        }} />} />
+        <Route path="/register" element={<RegisterPage />} />
+        <Route path="/otp-verification" element={<OTPVerification />} />
+        <Route path="/forgot-password" element={<ForgotPassword />} />  
+        <Route path="/update-password" element={<UpdatePassword />} />  
+        <Route path="*" element={<Navigate to="/" />} />
+      </Routes>
       )}
     </Router>
   );

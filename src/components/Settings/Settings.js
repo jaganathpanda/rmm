@@ -1,5 +1,8 @@
 import React, { useState } from "react";
 import PPCSetting from "./PPCSetting";
+import Category from "./Category";
+import BagConfiguration from "./BagConfiguration";
+import Warehouse from "./Warehouse";
 import "./Settings.css";
 
 const Settings = () => {
@@ -9,6 +12,12 @@ const Settings = () => {
     switch (selectedSetting) {
       case "PPCSetting":
         return <PPCSetting />;
+      case "Category":
+        return <Category />;
+      case "BagConfiguration":
+        return <BagConfiguration />;
+      case "Warehouse":
+        return <Warehouse />;
       default:
         return <div>Select a setting from the menu</div>;
     }
@@ -24,12 +33,28 @@ const Settings = () => {
           >
             PPC Setting
           </li>
-          {/* Add more settings in the future */}
+          <li
+            className={selectedSetting === "Category" ? "active" : ""}
+            onClick={() => setSelectedSetting("Category")}
+          >
+            Category
+          </li>
+          <li
+            className={selectedSetting === "BagConfiguration" ? "active" : ""}
+            onClick={() => setSelectedSetting("BagConfiguration")}
+          >
+            Bag Configuration
+          </li>
+
+          <li
+            className={selectedSetting === "Warehouse" ? "active" : ""}
+            onClick={() => setSelectedSetting("Warehouse")}
+          >
+            Warehouse
+          </li>
         </ul>
       </div>
-      <div className="settings-content">
-        {renderSettingComponent()}
-      </div>
+      <div className="settings-content">{renderSettingComponent()}</div>
     </div>
   );
 };
