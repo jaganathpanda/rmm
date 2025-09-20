@@ -10,7 +10,7 @@ const LandingPage = () => {
         <div className="logo">RMMS</div>
         <nav className="landing-nav">
           <Link to="#pricing">Pricing</Link>
-          <a href="/#/login" target="_blank" rel="noopener noreferrer">Login</a>
+          <Link to="/login">Login</Link> 
           <Link to="/register" className="btn-free-trial">Free Trial</Link>
         </nav>
       </header>
