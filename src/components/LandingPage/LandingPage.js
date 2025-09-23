@@ -1,6 +1,8 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import "./LandingPage.css";
+import HeroCarousel from "../HeroCarousel/HeroCarousel";
+
 
 const LandingPage = () => {
   return (
@@ -17,14 +19,7 @@ const LandingPage = () => {
 
       {/* 🔹 Hero Section */}
       <section className="hero">
-        <h1>Manage Your Rice Mill Business Smarter</h1>
-        <p>
-          From paddy purchase to sales & reports — everything at your fingertips.  
-        </p>
-        <div className="hero-buttons">
-          <Link to="/register" className="btn-primary">Start Free Trial</Link>
-          <Link to="#pricing" className="btn-secondary">View Pricing</Link>
-        </div>
+      <HeroCarousel />
       </section>
 
       {/* 🔹 Pricing Section */}

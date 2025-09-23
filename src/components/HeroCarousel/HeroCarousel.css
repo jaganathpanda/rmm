@@ -1,0 +1,119 @@
+.hero-carousel {
+    position: relative;
+    width: 100%;
+    height: 70vh;
+    overflow: hidden;
+  }
+  
+  .carousel-slide {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-size: cover;
+    background-position: center;
+    opacity: 0;
+    transform: scale(1.05);
+    transition: opacity 1s ease, transform 1s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .carousel-slide.active {
+    opacity: 1;
+    transform: scale(1);
+    position: relative;
+  }
+  
+  .carousel-overlay {
+    text-align: center;
+    color: white;
+    background: #007bff;
+    padding: 20px;
+    border-radius: 8px;
+    max-width: 700px;
+  }
+  
+  .carousel-overlay h1 {
+    font-size: 2.5rem;
+    margin-bottom: 15px;
+  }
+  
+  .carousel-overlay p {
+    font-size: 1.2rem;
+    margin-bottom: 20px;
+  }
+  
+  .carousel-buttons {
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+  }
+  
+  .btn-primary,
+  .btn-secondary {
+    padding: 12px 24px;
+    border-radius: 6px;
+    font-size: 1rem;
+    text-decoration: none;
+    font-weight: bold;
+    transition: 0.3s;
+  }
+  
+  .btn-primary {
+    background: #fff;
+    color: #007bff;
+  }
+  
+  .btn-primary:hover {
+    background: #f0f0f0;
+  }
+  
+  .btn-secondary {
+    background: transparent;
+    border: 2px solid white;
+    color: white;
+  }
+  
+  .btn-secondary:hover {
+    background: rgba(255, 255, 255, 0.2);
+  }
+  
+  /* 🔹 Dots at Bottom */
+  .carousel-dots {
+    position: absolute;
+    bottom: 20px;
+    width: 100%;
+    text-align: center;
+  }
+  
+  .carousel-dots .dot {
+    height: 12px;
+    width: 12px;
+    margin: 0 6px;
+    display: inline-block;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.6);
+    cursor: pointer;
+  }
+  
+  .carousel-dots .dot.active {
+    background: white;
+  }
+  
+  /* Responsive */
+  @media (max-width: 768px) {
+    .carousel-overlay h1 {
+      font-size: 1.8rem;
+    }
+    .carousel-overlay p {
+      font-size: 1rem;
+    }
+    .carousel-buttons {
+      flex-direction: column;
+      gap: 10px;
+    }
+  }
+  
