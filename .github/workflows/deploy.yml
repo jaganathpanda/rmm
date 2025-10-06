@@ -1,9 +1,9 @@
-name: Deploy React App to GitHub Pages
+name: Build and Deploy React App to GitHub Pages
 
 on:
   push:
     branches:
-      - main  # or master, depending on your repo
+      - main
 
 jobs:
   build-and-deploy:
@@ -12,11 +12,13 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+        with:
+          persist-credentials: false  # 🚨 Important — gh-pages will handle auth manually
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 18
+          node-version: 20
 
       - name: Install dependencies
         run: npm ci
@@ -24,13 +26,15 @@ jobs:
       - name: Build project
         run: CI=false npm run build
 
-      # ✅ Add this step before deploying
       - name: Configure Git identity
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
 
-      - name: Deploy to GitHub Pages
-        run: npx gh-pages -d build --branch gh-pages
+      - name: Deploy to GitHub Pages 🚀
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          npx gh-pages -d build \
+            --repo https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/jaganathpanda/rmm.git \
+            --branch gh-pages
