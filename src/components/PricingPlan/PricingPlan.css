@@ -1,0 +1,78 @@
+/* 🔹 Pricing Section Container */
+.plans-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 25px;
+    padding: 60px 20px;
+    background: #fafafa;
+  }
+  
+  /* Individual Plan Card */
+  .plan-card {
+    background: #fff;
+    padding: 25px;
+    border-radius: 10px;
+    box-shadow: 0 0 12px rgba(0,0,0,0.1);
+    width: 280px;
+    text-align: left;
+    transition: transform 0.3s ease;
+  }
+  
+  .plan-card:hover {
+    transform: translateY(-8px);
+  }
+  
+  .plan-card h2 {
+    color: #333;
+    margin-bottom: 10px;
+  }
+  
+  .price {
+    font-size: 1.4rem;
+    font-weight: bold;
+    margin-bottom: 15px;
+    color: #007b5e;
+  }
+  
+  .plan-card ul {
+    list-style: none;
+    padding: 0;
+    margin-bottom: 20px;
+  }
+  
+  .plan-card ul li {
+    margin: 8px 0;
+    color: #444;
+  }
+  
+  /* Plan Button */
+  .plan-btn {
+    display: block;
+    text-align: center;
+    padding: 10px;
+    background: #007bff;
+    color: white;
+    text-decoration: none;
+    border-radius: 6px;
+    font-weight: bold;
+  }
+  
+  .plan-btn:hover {
+    background: #0056b3;
+  }
+  
+  /* Highlight Silver Plan */
+  .featured {
+    border: 2px solid #007bff;
+    transform: scale(1.05);
+  }
+  
+  /* Responsive for Pricing */
+  @media (max-width: 768px) {
+    .plans-container {
+      flex-direction: column;
+      align-items: center;
+    }
+  }
+  
