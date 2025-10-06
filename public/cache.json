@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2025-10-06T11:11:08.704Z",
+  "lastUpdated": "2025-10-06T11:16:16.616Z",
   "sheet": "Content",
   "data": [
     {
@@ -70,6 +70,16 @@
       "PlanName": "Gold",
       "Price": "?1999 / month",
       "Features": "Everything in Silver;Attendance & Payroll;Advanced Reports;Priority Support",
+      "": ""
+    },
+    {
+      "Type": "card",
+      "Image URL": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEieIKYvhoEoJX8LQBF3UzQ_r5LiLdYrtFjgQGj4z1Wcf_kX31Xi8xV41dyq5LkOyoinZxvNApGYWiYWtlS5KHaPf-m6ps0faXjpBIQhyK5M43uCOY29CLKdhNncsXIDOMBKIAmGfpJt1BvXxdUWJa1iKDq-X9eZuPjL88kFWmCGLp6lI8l2KO5z_1liMX-G/s1024/riceMill.webp",
+      "Content": "Inventory Management",
+      "Link/Details": "/register",
+      "PlanName": "",
+      "Price": "",
+      "Features": "",
       "": ""
     },
     {
