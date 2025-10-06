@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2025-10-05T18:29:34.850Z",
+  "lastUpdated": "2025-10-06T10:06:22.018Z",
   "sheet": "Content",
   "data": [
     {
@@ -9,7 +9,8 @@
       "Link/Details": "",
       "PlanName": "",
       "Price": "",
-      "Features": "Links: Pricing:/pricing, Login:/login, Free Trial:/register, Promotion:/register"
+      "Features": "Links: Pricing:/pricing, Login:/login, Free Trial:/register, Promotion:/register",
+      "Push Flag": "  "
     },
     {
       "Type": "heroCarousel",
@@ -18,7 +19,8 @@
       "Link/Details": "",
       "PlanName": "",
       "Price": "",
-      "Features": ""
+      "Features": "",
+      "Push Flag": ""
     },
     {
       "Type": "heroCarousel",
@@ -27,7 +29,8 @@
       "Link/Details": "",
       "PlanName": "",
       "Price": "",
-      "Features": ""
+      "Features": "",
+      "Push Flag": ""
     },
     {
       "Type": "heroCarousel",
@@ -36,7 +39,8 @@
       "Link/Details": "",
       "PlanName": "",
       "Price": "",
-      "Features": ""
+      "Features": "",
+      "Push Flag": ""
     },
     {
       "Type": "pricingPlan",
@@ -45,7 +49,8 @@
       "Link/Details": "/register",
       "PlanName": "Basic",
       "Price": "?499 / month",
-      "Features": "Dashboard Access;Basic Reports;Customer Management"
+      "Features": "Dashboard Access;Basic Reports;Customer Management",
+      "Push Flag": ""
     },
     {
       "Type": "pricingPlan",
@@ -54,7 +59,8 @@
       "Link/Details": "/register",
       "PlanName": "Silver",
       "Price": "?999 / month",
-      "Features": "Everything in Basic;Inventory Management;Sales & Purchase Vouchers"
+      "Features": "Everything in Basic;Inventory Management;Sales & Purchase Vouchers",
+      "Push Flag": ""
     },
     {
       "Type": "pricingPlan",
@@ -63,7 +69,8 @@
       "Link/Details": "/register",
       "PlanName": "Gold",
       "Price": "?1999 / month",
-      "Features": "Everything in Silver;Attendance & Payroll;Advanced Reports;Priority Support"
+      "Features": "Everything in Silver;Attendance & Payroll;Advanced Reports;Priority Support",
+      "Push Flag": ""
     },
     {
       "Type": "card",
@@ -72,7 +79,8 @@
       "Link/Details": "/register",
       "PlanName": "",
       "Price": "",
-      "Features": ""
+      "Features": "",
+      "Push Flag": ""
     },
     {
       "Type": "card",
@@ -81,7 +89,8 @@
       "Link/Details": "/register",
       "PlanName": "",
       "Price": "",
-      "Features": ""
+      "Features": "",
+      "Push Flag": ""
     }
   ]
 }
