@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState} from "react";
 import { getUserInfo, setUserInfo } from "../../utils/userSession";
 import "./Profile.css";
 
