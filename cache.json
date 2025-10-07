@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2025-10-07T12:42:46.759Z",
+  "lastUpdated": "2025-10-07T12:52:13.825Z",
   "sheet": "Content",
   "data": [
     {
@@ -48,7 +48,7 @@
       "Content": "",
       "Link/Details": "/register",
       "PlanName": "Basic",
-      "Price": "?399 / month",
+      "Price": "₹399 / month",
       "Features": "Dashboard Access;Basic Reports;Customer Management",
       "": ""
     },
@@ -58,7 +58,7 @@
       "Content": "",
       "Link/Details": "/register",
       "PlanName": "Silver",
-      "Price": "?999 / month",
+      "Price": "₹999 / month",
       "Features": "Everything in Basic;Inventory Management;Sales & Purchase Vouchers",
       "": ""
     },
@@ -68,7 +68,7 @@
       "Content": "",
       "Link/Details": "/register",
       "PlanName": "Gold",
-      "Price": "?1999 / month",
+      "Price": "₹1999 / month",
       "Features": "Everything in Silver;Attendance & Payroll;Advanced Reports;Priority Support",
       "": ""
     },
@@ -97,16 +97,6 @@
       "Image URL": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEieIKYvhoEoJX8LQBF3UzQ_r5LiLdYrtFjgQGj4z1Wcf_kX31Xi8xV41dyq5LkOyoinZxvNApGYWiYWtlS5KHaPf-m6ps0faXjpBIQhyK5M43uCOY29CLKdhNncsXIDOMBKIAmGfpJt1BvXxdUWJa1iKDq-X9eZuPjL88kFWmCGLp6lI8l2KO5z_1liMX-G/s1024/riceMill.webp",
       "Content": "Inventory Management",
       "Link/Details": "/register",
-      "PlanName": "",
-      "Price": "",
-      "Features": "",
-      "": ""
-    },
-    {
-      "Type": "textBlock",
-      "Image URL": "",
-      "Content": "Welcome to our rice mill. We ensure every grain meets the highest quality standards.",
-      "Link/Details": "",
       "PlanName": "",
       "Price": "",
       "Features": "",
